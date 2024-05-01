@@ -27,8 +27,8 @@
           </v-row>
           <v-row align="center" style="height: 30%">
             <v-col cols="12">
-              <v-btn width="100%" large color="primary" class="mb-2"> Button </v-btn>
-              <v-btn width="100%" large>cadastrar</v-btn>
+              <v-btn width="100%" large color="primary" class="mb-2">entrar </v-btn>
+              <v-btn width="100%" large color="primary" to="/register">cadastrar</v-btn>
             </v-col>
           </v-row>
         </v-card>
