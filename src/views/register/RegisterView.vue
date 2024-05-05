@@ -181,6 +181,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { ExternalServices } from '@/services/ExternalServices';
 import type { RegisterFormAddress } from '@/types/register/RegisterForm';
 import { RegisterForm } from '@/types/register/RegisterForm';
@@ -205,7 +206,6 @@ function onFileChange(event: Event) {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      // selectedImage.value = e.target?.result as string;
       if (reader.result) {
         selectedImage.value = reader.result.toString();
       }
@@ -257,17 +257,18 @@ function canCadastrateUser(): boolean {
 }
 
 function cadastrate() {
-  console.log(canCadastrateUser());
-  console.log(form.value);
+  if (canCadastrateUser())
+    router.push('/home');
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   display: flex;
   min-height: 100vh;
   align-items: center;
 }
+
 span[aria-label='Badge'],
 .chooseImage {
   left: calc(77% - 12px) !important;
