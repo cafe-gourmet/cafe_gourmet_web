@@ -3,12 +3,20 @@
     <div class="font-weight-bold" style="font-size: 2rem">{{ props.title }}</div>
     <div class="mt-4">
       <v-row>
-        <v-col v-for="(item, index) in items" :key="index" sm="6" md="6" align-self="center">
+        <v-col
+          v-for="(item, index) in items"
+          :key="index"
+          cols="6"
+          sm="3"
+          md="3"
+          lg="3"
+          align-self="center"
+        >
           <item-component :text="item.text" :amount="item.amount" />
         </v-col>
       </v-row>
     </div>
-    <v-btn width="100%" size="x-large" color="secondary" class="mt-8 text-primary">
+    <v-btn width="100%" size="large" color="secondary" class="mt-8 text-primary">
       <span class="font-weight-bold">{{ textButton }}</span>
     </v-btn>
   </v-container>

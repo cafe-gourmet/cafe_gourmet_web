@@ -2,7 +2,9 @@
   <v-container class="header bg-secondary">
     <v-row>
       <v-col cols="2" class="py-4 pr-0">
-        <v-icon color="primary" size="2.4rem" class="cursor-pointer">mdi-menu</v-icon>
+        <v-icon color="primary" size="2.4rem" class="cursor-pointer" @click="showMenu = true">
+          mdi-menu
+        </v-icon>
       </v-col>
       <v-col cols="7" class="px-1">
         <v-text-field
@@ -24,11 +26,21 @@
         </v-badge>
       </v-col>
       <v-col cols="2" class="py-4">
-        <v-icon color="primary" size="2.4rem" class="cursor-pointer">mdi-account-circle-outline</v-icon>
+        <v-icon color="primary" size="2.4rem" class="cursor-pointer"
+          >mdi-account-circle-outline</v-icon
+        >
       </v-col>
     </v-row>
+    <menu-component :show="showMenu" @close="showMenu = false" />
   </v-container>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import menuComponent from './menuComponent.vue';
+
+const showMenu = ref(false);
+</script>
 
 <style scoped>
 .header {

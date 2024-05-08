@@ -1,8 +1,8 @@
 <template>
   <v-container fluid class="container">
-    <header-component></header-component>
+    <header-component />
     <div style="height: 100px"></div>
-    <v-carousel cycle height="300" style="width: 100vw">
+    <v-carousel color="primary" cycle height="300" style="width: 100vw">
       <v-carousel-item v-for="(image, index) in carouselImages" :key="index" :src="image" cover />
     </v-carousel>
     <section-component
