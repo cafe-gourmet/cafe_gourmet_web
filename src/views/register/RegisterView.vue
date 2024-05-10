@@ -1,7 +1,7 @@
 <template>
   <v-container class="container">
     <v-row align="center" justify="center">
-      <v-col cols="9">
+      <v-col cols="11">
         <v-card color="secondary" class="text-center px-8 py-2 mb-8">
           <v-row align="center" style="height: 14rem">
             <v-col cols="12">
@@ -12,7 +12,9 @@
                 color="primary"
                 @click="openFileSelector"
                 class="cursor-pointer"
-                style="position: relative; z-index: 1"
+                offset-x="20"
+                offset-y="10"
+                rounded="true"
               >
                 <template v-slot:badge>
                   <v-icon size="20" color="secondary">mdi-pencil</v-icon>
@@ -52,7 +54,7 @@
             <v-img v-if="selectedImage" :src="selectedImage" contain></v-img>
             <v-col cols="12">
               <v-text-field
-                v-model="form.name"
+                v-model="user.name"
                 label="Nome"
                 variant="outlined"
                 dense
@@ -61,13 +63,13 @@
           </v-row>
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
-              <v-text-field v-model="form.cpf" label="CPF" variant="outlined"></v-text-field>
+              <v-text-field v-model="user.cpf" label="CPF" variant="outlined"></v-text-field>
             </v-col>
           </v-row>
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.email"
+                v-model="user.email"
                 class="text-left"
                 type="email"
                 label="Email"
@@ -78,7 +80,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.telephone"
+                v-model="user.telephone"
                 label="Telefone"
                 variant="outlined"
               ></v-text-field>
@@ -87,7 +89,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.address.cep"
+                v-model="user.address.cep"
                 append-inner-icon="mdi-magnify"
                 :loading="loadingFindCep"
                 label="CEP"
@@ -100,7 +102,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.address.state"
+                v-model="user.address.state"
                 :disabled="true"
                 label="Estado"
                 variant="outlined"
@@ -110,7 +112,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.address.city"
+                v-model="user.address.city"
                 :disabled="true"
                 label="Cidade"
                 variant="outlined"
@@ -120,7 +122,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.address.neighborhood"
+                v-model="user.address.neighborhood"
                 :disabled="true"
                 label="Bairro"
                 variant="outlined"
@@ -130,7 +132,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.address.street"
+                v-model="user.address.street"
                 :disabled="true"
                 label="Rua"
                 variant="outlined"
@@ -140,7 +142,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.address.number"
+                v-model="user.address.number"
                 label="Número"
                 variant="outlined"
               ></v-text-field>
@@ -148,13 +150,13 @@
           </v-row>
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
-              <v-text-field v-model="form.password" label="Senha" variant="outlined"></v-text-field>
+              <v-text-field v-model="user.password" label="Senha" variant="outlined"></v-text-field>
             </v-col>
           </v-row>
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="form.passwordRepeated"
+                v-model="user.passwordRepeated"
                 label="Repita sua senha"
                 variant="outlined"
               ></v-text-field>
@@ -171,7 +173,7 @@
               >
                 cadastrar
               </v-btn>
-              <v-btn width="100%" large color="primary" variant="outlined">voltar</v-btn>
+              <v-btn width="100%" large color="primary" variant="outlined" to="/">voltar</v-btn>
             </v-col>
           </v-row>
         </v-card>
@@ -183,12 +185,12 @@
 <script setup lang="ts">
 import router from '@/router';
 import { ExternalServices } from '@/services/ExternalServices';
-import type { RegisterFormAddress } from '@/types/register/RegisterForm';
-import { RegisterForm } from '@/types/register/RegisterForm';
+import type { UserAddress } from '@/entity/User';
+import { User } from '@/entity/User';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 
-const form = ref(new RegisterForm());
+const user = ref(new User());
 const toast = useToast();
 const loadingFindCep = ref(false);
 const selectedImage = ref<string | null>(null);
@@ -205,7 +207,7 @@ function onFileChange(event: Event) {
   if (file && file.type.startsWith('image/')) {
     const reader = new FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = () => {
       if (reader.result) {
         selectedImage.value = reader.result.toString();
       }
@@ -219,8 +221,8 @@ function onFileChange(event: Event) {
 async function findAddressByCep() {
   try {
     loadingFindCep.value = true;
-    const addressResponse = await ExternalServices.getAddressByCep(form.value.address.cep);
-    form.value.address.fillByApiCepResponse(addressResponse);
+    const addressResponse = await ExternalServices.getAddressByCep(user.value.address.cep);
+    user.value.address.fillByApiCepResponse(addressResponse);
   } catch (error) {
     console.error(error);
   } finally {
@@ -229,26 +231,26 @@ async function findAddressByCep() {
 }
 
 function canCadastrateUser(): boolean {
-  const formValues: RegisterForm = form.value;
+  const userValues: User = user.value;
   let haveEmptyField: boolean = false;
 
-  Object.keys(formValues).map((field) => {
-    const fieldValue: string | RegisterFormAddress = formValues[field as keyof typeof formValues];
+  Object.keys(userValues).map((field) => {
+    const fieldValue: string | UserAddress = userValues[field as keyof typeof userValues];
 
     if (!fieldValue) {
       haveEmptyField = true;
     }
   });
 
-  if (!form.value.address.cep) haveEmptyField = true;
-  if (!form.value.address.number) haveEmptyField = true;
+  if (!user.value.address.cep) haveEmptyField = true;
+  if (!user.value.address.number) haveEmptyField = true;
 
   if (haveEmptyField) {
     toast.error('Preencha todos os campos.');
     return false;
   }
 
-  if (formValues.password !== formValues.passwordRepeated) {
+  if (userValues.password !== userValues.passwordRepeated) {
     toast.error('As senhas devem ser iguais.');
     return false;
   }
@@ -257,8 +259,7 @@ function canCadastrateUser(): boolean {
 }
 
 function cadastrate() {
-  if (canCadastrateUser())
-    router.push('/home');
+  if (canCadastrateUser()) router.push('/home');
 }
 </script>
 
@@ -267,20 +268,5 @@ function cadastrate() {
   display: flex;
   min-height: 100vh;
   align-items: center;
-}
-
-span[aria-label='Badge'],
-.chooseImage {
-  left: calc(77% - 12px) !important;
-  bottom: calc(80% - 12px) !important;
-  height: fit-content !important;
-  border-radius: 30px;
-}
-
-span[aria-label='Badge'] .deleteImage {
-  left: calc(57% - 12px) !important;
-  bottom: calc(80% - 12px) !important;
-  height: fit-content !important;
-  border-radius: 30px;
 }
 </style>

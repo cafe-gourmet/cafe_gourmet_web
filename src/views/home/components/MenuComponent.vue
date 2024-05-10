@@ -1,5 +1,5 @@
 <template>
-  <v-container class="menuContainer" style="display: flex" v-if="props.show">
+  <v-container class="menuContainer" style="display: flex" v-if="props.show" fluid>
     <v-card color="primary text-secondary" width="80%" height="100%" class="py-4 px-4">
       <v-row>
         <v-col cols="9" class="text-h6 font-weight-bold"> Café Gourmet </v-col>
@@ -7,30 +7,32 @@
           <v-icon size="large" @click="close">mdi-close</v-icon>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="mt-4">
         <v-col cols="12" class="font-weight-bold"> O que deseja conhecer? </v-col>
       </v-row>
-      <v-divider color="secondary" :thickness="2" class="border-opacity-50" />
-      <div class="mt-2 mb-2 cursor-pointer">Nossos Produtos</div>
+      <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
+      <div class="mt-4 mb-2 cursor-pointer">Nossos Produtos</div>
       <div class="mb-2 cursor-pointer">Nossos Planos</div>
-      <div class="mb-6 cursor-pointer">Sobre nós</div>
+      <div class="mb-8 cursor-pointer">Sobre nós</div>
       <v-row>
         <v-col cols="12" class="font-weight-bold"> O que deseja encontrar? </v-col>
       </v-row>
-      <v-divider color="secondary" :thickness="2" class="border-opacity-50" />
-      <div class="mt-2 mb-2 cursor-pointer">Meu Carrinho</div>
-      <div class="mb-6 cursor-pointer">Meus dados</div>
-            <v-row>
+      <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
+      <div class="mt-4 mb-2 cursor-pointer">Meu Carrinho</div>
+      <div class="mb-8 cursor-pointer">Meus dados</div>
+      <v-row>
         <v-col cols="12" class="font-weight-bold"> Quer trocar de conta? </v-col>
       </v-row>
-      <v-divider color="secondary" :thickness="2" class="border-opacity-50" />
-      <div class="mt-2 mb-2 cursor-pointer">Sair</div>
+      <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
+      <div class="mt-4 mb-2 cursor-pointer" @click="router.push('/')">Sair</div>
     </v-card>
     <v-card width="20%" height="100%" style="background-color: transparent" :onclick="close" />
   </v-container>
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
+
 const props = defineProps(['show']);
 const emit = defineEmits(['close']);
 

@@ -1,6 +1,6 @@
-import type { GetAddressByCepResponse } from "../responses/GetAddressByCepResponse";
+import type { GetAddressByCepResponse } from '../types/responses/GetAddressByCepResponse';
 
-export class RegisterFormAddress {
+export class UserAddress {
   cep: string;
   state: string;
   city: string;
@@ -26,14 +26,14 @@ export class RegisterFormAddress {
   }
 }
 
-export class RegisterForm {
+export class User {
   name: string;
   email: string;
   cpf: string;
   telephone: string;
   password: string;
   passwordRepeated: string;
-  address: RegisterFormAddress;
+  address: UserAddress;
 
   constructor() {
     this.name = '';
@@ -42,6 +42,6 @@ export class RegisterForm {
     this.telephone = '';
     this.password = '';
     this.passwordRepeated = '';
-    this.address = new RegisterFormAddress();
+    this.address = new UserAddress();
   }
 }

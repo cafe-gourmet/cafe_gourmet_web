@@ -1,7 +1,7 @@
 <template>
   <v-container style="height: 100vh">
     <v-row class="h-100" align="center" justify="center">
-      <v-col cols="9" style="height: 70vh">
+      <v-col cols="11" style="height: 70vh">
         <v-card height="100%" color="secondary" class="text-center px-8 py-2">
           <v-row align="center" style="height: 45%">
             <v-col cols="12">
