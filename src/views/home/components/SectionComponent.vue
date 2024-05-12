@@ -16,16 +16,22 @@
         </v-col>
       </v-row>
     </div>
-    <v-btn width="100%" size="large" color="secondary" class="mt-8 text-primary">
+    <v-btn
+      width="100%"
+      size="large"
+      color="secondary"
+      class="mt-8 text-primary"
+      :to="props.redirect"
+    >
       <span class="font-weight-bold">{{ textButton }}</span>
     </v-btn>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import ItemComponent from '@/components/ItemComponent.vue';
+import ItemComponent from './ItemComponent.vue';
 
-const props = defineProps(['title', 'textButton', 'items']);
+const props = defineProps(['title', 'textButton', 'items', 'redirect']);
 </script>
 
 <style scoped>

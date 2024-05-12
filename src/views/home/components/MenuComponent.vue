@@ -2,7 +2,13 @@
   <v-container class="menuContainer" style="display: flex" v-if="props.show" fluid>
     <v-card color="primary text-secondary" width="80%" height="100%" class="py-4 px-4">
       <v-row>
-        <v-col cols="9" class="text-h6 font-weight-bold"> Café Gourmet </v-col>
+        <v-col
+          cols="9"
+          class="text-h6 font-weight-bold cursor-pointer"
+          @click="router.push('/home')"
+        >
+          Café Gourmet
+        </v-col>
         <v-col cols="3" class="text-end">
           <v-icon size="large" @click="close">mdi-close</v-icon>
         </v-col>

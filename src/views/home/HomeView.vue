@@ -1,16 +1,16 @@
 <template>
   <v-container fluid class="container">
     <header-component />
-    <div style="height: 100px"></div>
-    <v-carousel color="primary" cycle height="300" style="width: 100vw">
+    <v-carousel color="primary" cycle height="300" style="width: 100vw; margin-top: 100px;" >
       <v-carousel-item v-for="(image, index) in carouselImages" :key="index" :src="image" cover />
     </v-carousel>
     <section-component
       title="Nossos Produtos"
       text-button="todos os produtos"
       :items="productItems"
+      redirect="/products"
     />
-    <section-component title="Nossos Planos" text-button="todos os planos" :items="planItems" />
+    <section-component title="Nossos Planos" text-button="todos os planos" :items="planItems" redirect="/plans"/>
   </v-container>
 </template>
 
