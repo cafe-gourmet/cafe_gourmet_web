@@ -50,132 +50,165 @@
               />
             </v-col>
           </v-row>
-          <v-row style="height: 5rem">
-            <v-img v-if="selectedImage" :src="selectedImage" contain></v-img>
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.name"
-                label="Nome"
-                variant="outlined"
-                dense
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field v-model="user.cpf" label="CPF" variant="outlined"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.email"
-                class="text-left"
-                type="email"
-                label="Email"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.telephone"
-                label="Telefone"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.address.cep"
-                append-inner-icon="mdi-magnify"
-                :loading="loadingFindCep"
-                label="CEP"
-                variant="outlined"
-                color="primary"
-                @click:append-inner="findAddressByCep"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.address.state"
-                :disabled="true"
-                label="Estado"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.address.city"
-                :disabled="true"
-                label="Cidade"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.address.neighborhood"
-                :disabled="true"
-                label="Bairro"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.address.street"
-                :disabled="true"
-                label="Rua"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.address.number"
-                label="Número"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field v-model="user.password" label="Senha" variant="outlined"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="user.passwordRepeated"
-                label="Repita sua senha"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align="center" class="mt-8 mb-4">
-            <v-col cols="12">
-              <v-btn
-                width="100%"
-                large
-                color="primary text-secondary"
-                class="mb-2"
-                @click="cadastrate()"
-              >
-                cadastrar
-              </v-btn>
-              <v-btn width="100%" large color="primary" variant="outlined" to="/">voltar</v-btn>
-            </v-col>
-          </v-row>
+          <v-form @submit.prevent ref="register">
+            <v-row style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.nomeCompleto"
+                  label="Nome Completo"
+                  variant="outlined"
+                  class="text-start"
+                  :rules="[rules.required, rules.min4Length]"
+                  dense
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.cpf"
+                  class="text-start"
+                  :rules="[rules.required, rules.validCpf]"
+                  label="CPF"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.email"
+                  :rules="[rules.required, rules.validEmail]"
+                  class="text-start"
+                  type="email"
+                  label="Email"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.telefone"
+                  label="Telefone"
+                  class="text-start"
+                  :rules="[rules.required, rules.validTelephone]"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.endereco.cep"
+                  append-inner-icon="mdi-magnify"
+                  :loading="loadingFindCep"
+                  :rules="[rules.required, rules.validCep]"
+                  label="CEP"
+                  class="text-start"
+                  variant="outlined"
+                  color="primary"
+                  @click:append-inner="findAddressByCep"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.endereco.estado"
+                  :disabled="true"
+                  label="Estado"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.endereco.cidade"
+                  :disabled="true"
+                  label="Cidade"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.endereco.bairro"
+                  :disabled="true"
+                  label="Bairro"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.endereco.rua"
+                  :disabled="true"
+                  label="Rua"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.endereco.numero"
+                  :rules="[rules.required, rules.validNumber]"
+                  label="Número"
+                  class="text-start"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.senha"
+                  label="Senha"
+                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="showPassword ? 'text' : 'password'"
+                  @click:append-inner="showPassword = !showPassword"
+                  :rules="[rules.required, rules.validPassword]"
+                  class="text-start"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" style="height: 6rem">
+              <v-col cols="12">
+                <v-text-field
+                  v-model="repeatedPassword"
+                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="showPassword ? 'text' : 'password'"
+                  @click:append-inner="showPassword = !showPassword"
+                  :rules="[rules.required, rules.isEqualTo(user.senha, repeatedPassword)]"
+                  label="Repita sua senha"
+                  class="text-start"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row align="center" class="mt-8 mb-4">
+              <v-col cols="12">
+                <v-btn
+                  width="100%"
+                  large
+                  color="primary text-secondary"
+                  class="mb-2"
+                  type="submit"
+                  block
+                  :loading="loadingCadastrate"
+                  @click="cadastrate()"
+                >
+                  cadastrar
+                </v-btn>
+                <v-btn width="100%" large color="primary" variant="outlined" to="/">voltar</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
@@ -183,16 +216,21 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router';
-import { ExternalServices } from '@/services/ExternalServices';
-import type { UserAddress } from '@/entity/User';
 import { User } from '@/entity/User';
+import { ExternalServices } from '@/services/ExternalServices';
+import UserServices from '@/services/UserServices';
+import Rules from '@/utils/rules';
+import { isValidCEP } from '@brazilian-utils/brazilian-utils';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 
+const rules = ref(new Rules());
 const user = ref(new User());
 const toast = useToast();
 const loadingFindCep = ref(false);
+const loadingCadastrate = ref(false);
+const showPassword = ref(false);
+const repeatedPassword = ref('');
 const selectedImage = ref<string | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -219,47 +257,30 @@ function onFileChange(event: Event) {
 }
 
 async function findAddressByCep() {
+  if (!isValidCEP(user.value.endereco.cep)) return;
   try {
     loadingFindCep.value = true;
-    const addressResponse = await ExternalServices.getAddressByCep(user.value.address.cep);
-    user.value.address.fillByApiCepResponse(addressResponse);
+    const addressResponse = await ExternalServices.getAddressByCep(user.value.endereco.cep);
+    user.value.endereco.fillByApiCepResponse(addressResponse);
   } catch (error) {
-    console.error(error);
+    toast.error('Ocorreu um erro ao buscar as informações do CEP, tente novamente.');
   } finally {
     loadingFindCep.value = false;
   }
 }
 
-function canCadastrateUser(): boolean {
-  const userValues: User = user.value;
-  let haveEmptyField: boolean = false;
-
-  Object.keys(userValues).map((field) => {
-    const fieldValue: string | UserAddress = userValues[field as keyof typeof userValues];
-
-    if (!fieldValue) {
-      haveEmptyField = true;
-    }
-  });
-
-  if (!user.value.address.cep) haveEmptyField = true;
-  if (!user.value.address.number) haveEmptyField = true;
-
-  if (haveEmptyField) {
-    toast.error('Preencha todos os campos.');
-    return false;
+async function cadastrate() {
+  try {
+    loadingCadastrate.value = true;
+    const userRequest = user.value;
+    userRequest.fotoPerfil = selectedImage.value;
+    const response = await UserServices.register(userRequest);
+    console.log('response', response);
+  } catch (error) {
+    toast.error('Ocorreu um erro ao cadastrar o usuário, tente novamente.');
+  } finally {
+    loadingCadastrate.value = false;
   }
-
-  if (userValues.password !== userValues.passwordRepeated) {
-    toast.error('As senhas devem ser iguais.');
-    return false;
-  }
-
-  return true;
-}
-
-function cadastrate() {
-  if (canCadastrateUser()) router.push('/home');
 }
 </script>
 

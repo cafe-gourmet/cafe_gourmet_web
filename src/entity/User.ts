@@ -2,46 +2,46 @@ import type { GetAddressByCepResponse } from '../types/responses/GetAddressByCep
 
 export class UserAddress {
   cep: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
+  estado: string;
+  cidade: string;
+  bairro: string;
+  rua: string;
+  numero: string;
 
   constructor() {
     this.cep = '';
-    this.state = '';
-    this.city = '';
-    this.neighborhood = '';
-    this.street = '';
-    this.number = '';
+    this.estado = '';
+    this.cidade = '';
+    this.bairro = '';
+    this.rua = '';
+    this.numero = '';
   }
 
   fillByApiCepResponse(response: GetAddressByCepResponse) {
     this.cep = response.cep.replace('-', '');
-    this.state = response.uf;
-    this.city = response.localidade;
-    this.neighborhood = response.bairro;
-    this.street = response.logradouro;
+    this.estado = response.uf;
+    this.cidade = response.localidade;
+    this.bairro = response.bairro;
+    this.rua = response.logradouro;
   }
 }
 
 export class User {
-  name: string;
+  nomeCompleto: string;
   email: string;
   cpf: string;
-  telephone: string;
-  password: string;
-  passwordRepeated: string;
-  address: UserAddress;
+  telefone: string;
+  senha: string;
+  endereco: UserAddress;
+  fotoPerfil: string | null;
 
   constructor() {
-    this.name = '';
+    this.nomeCompleto = '';
     this.cpf = '';
     this.email = '';
-    this.telephone = '';
-    this.password = '';
-    this.passwordRepeated = '';
-    this.address = new UserAddress();
+    this.telefone = '';
+    this.senha = '';
+    this.fotoPerfil = '';
+    this.endereco = new UserAddress();
   }
 }
