@@ -1,11 +1,11 @@
 <template>
   <v-container class="menuContainer" style="display: flex" v-if="props.show" fluid>
-    <v-card color="primary text-secondary" width="80%" height="100%" class="py-4 px-4">
+    <v-card color="primary text-secondary" min-width="220px" max-width="400px" width="80%" height="100%" class="py-4 px-4">
       <v-row>
         <v-col
           cols="9"
           class="text-h6 font-weight-bold cursor-pointer"
-          @click="router.push('/home')"
+          @click="router.push('/client')"
         >
           Café Gourmet
         </v-col>
@@ -32,7 +32,7 @@
       <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
       <div class="mt-4 mb-2 cursor-pointer" @click="router.push('/')">Sair</div>
     </v-card>
-    <v-card width="20%" height="100%" style="background-color: transparent" :onclick="close" />
+    <v-card width="100%" height="100%" style="background-color: transparent" :onclick="close" />
   </v-container>
 </template>
 

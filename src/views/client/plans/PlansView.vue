@@ -2,12 +2,12 @@
   <v-container class="bg-primary text-secondary container" fluid>
     <header-component />
     <v-container fluid style="margin-top: 80px">
-      <v-btn color="secondary text-primary" class="mb-4" to="/home">
+      <v-btn color="secondary text-primary" class="mb-4" to="/client">
         <v-icon icon="mdi-keyboard-backspace" size="x-large" />
         Voltar
       </v-btn>
       <v-row class="font-weight-bold" style="font-size: 1.5rem; width: 100%">
-        <v-col cols="9">Nossos Produtos</v-col>
+        <v-col cols="9">Nossos Planos</v-col>
         <v-col
           cols="3"
           align-self="end"
@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import HeaderComponent from './../home/components/HeaderComponent.vue';
 import ItemComponent from '../home/components/ItemComponent.vue';
-import ProductItemDialog from './dialogs/ProductItemDialog.vue';
+import ProductItemDialog from '../products/dialogs/ProductItemDialog.vue';
 import { ref } from 'vue';
 
 const showProductItemDialog = ref(false);

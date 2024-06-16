@@ -65,7 +65,12 @@
         <v-row style="height: 5rem">
           <v-img v-if="selectedImage" :src="selectedImage" contain></v-img>
           <v-col cols="12">
-            <v-text-field v-model="user.name" label="Nome" variant="outlined" dense></v-text-field>
+            <v-text-field
+              v-model="user.nomeCompleto"
+              label="Nome"
+              variant="outlined"
+              dense
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row align="center" style="height: 5rem">
@@ -87,7 +92,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.telephone"
+              v-model="user.telefone"
               label="Telefone"
               variant="outlined"
             ></v-text-field>
@@ -96,7 +101,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.address.cep"
+              v-model="user.endereco.cep"
               append-inner-icon="mdi-magnify"
               :loading="loadingFindCep"
               label="CEP"
@@ -108,7 +113,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.address.state"
+              v-model="user.endereco.estado"
               :disabled="true"
               label="Estado"
               variant="outlined"
@@ -118,7 +123,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.address.city"
+              v-model="user.endereco.cidade"
               :disabled="true"
               label="Cidade"
               variant="outlined"
@@ -128,7 +133,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.address.neighborhood"
+              v-model="user.endereco.bairro"
               :disabled="true"
               label="Bairro"
               variant="outlined"
@@ -138,7 +143,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.address.street"
+              v-model="user.endereco.rua"
               :disabled="true"
               label="Rua"
               variant="outlined"
@@ -148,18 +153,18 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.address.number"
+              v-model="user.endereco.numero"
               label="Número"
               variant="outlined"
             ></v-text-field>
           </v-col>
         </v-row>
         <v-card variant="outlined" class="my-4 pa-4" style="background-color: transparent">
-          <div class="mb-4" >Alterar Senha</div>
+          <div class="mb-4">Alterar Senha</div>
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="user.password"
+                v-model="changePassword.password"
                 label="Senha Atual"
                 variant="outlined"
               ></v-text-field>
@@ -168,7 +173,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="user.password"
+                v-model="changePassword.newPassword"
                 label="Nova Senha"
                 variant="outlined"
               ></v-text-field>
@@ -177,7 +182,7 @@
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
-                v-model="user.passwordRepeated"
+                v-model="changePassword.newPasswordRepeated"
                 label="Repita sua senha"
                 variant="outlined"
               ></v-text-field>
@@ -215,6 +220,7 @@ import { useToast } from 'vue-toastification';
 
 const props = defineProps(['show']);
 const user = ref(new User());
+const changePassword = ref({ password: '', newPassword: '', newPasswordRepeated: '' });
 const toast = useToast();
 const loadingFindCep = ref(false);
 const selectedImage = ref<string | null>(null);
@@ -245,8 +251,8 @@ function onFileChange(event: Event) {
 async function findAddressByCep() {
   try {
     loadingFindCep.value = true;
-    const addressResponse = await ExternalServices.getAddressByCep(user.value.address.cep);
-    user.value.address.fillByApiCepResponse(addressResponse);
+    const addressResponse = await ExternalServices.getAddressByCep(user.value.endereco.cep);
+    user.value.endereco.fillByApiCepResponse(addressResponse);
   } catch (error) {
     console.error(error);
   } finally {
@@ -259,22 +265,22 @@ function canCadastrateUser(): boolean {
   let haveEmptyField: boolean = false;
 
   Object.keys(userValues).map((field) => {
-    const fieldValue: string | UserAddress = userValues[field as keyof typeof userValues];
+    const fieldValue: string | UserAddress | null = userValues[field as keyof typeof userValues];
 
     if (!fieldValue) {
       haveEmptyField = true;
     }
   });
 
-  if (!user.value.address.cep) haveEmptyField = true;
-  if (!user.value.address.number) haveEmptyField = true;
+  if (!user.value.endereco.cep) haveEmptyField = true;
+  if (!user.value.endereco.numero) haveEmptyField = true;
 
   if (haveEmptyField) {
     toast.error('Preencha todos os campos.');
     return false;
   }
 
-  if (userValues.password !== userValues.passwordRepeated) {
+  if (changePassword.value.newPassword !== changePassword.value.newPasswordRepeated) {
     toast.error('As senhas devem ser iguais.');
     return false;
   }
@@ -283,6 +289,6 @@ function canCadastrateUser(): boolean {
 }
 
 function cadastrate() {
-  if (canCadastrateUser()) router.push('/home');
+  if (canCadastrateUser()) router.push('/client');
 }
 </script>

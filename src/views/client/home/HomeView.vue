@@ -8,15 +8,15 @@
       title="Nossos Produtos"
       text-button="todos os produtos"
       :items="productItems"
-      redirect="/products"
+      redirect="/client/products"
     />
     <section-component title="Nossos Planos" text-button="todos os planos" :items="planItems" redirect="/plans"/>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import HeaderComponent from '@/views/home/components/HeaderComponent.vue';
-import SectionComponent from '@/views/home/components/SectionComponent.vue';
+import HeaderComponent from '@/views/client/home/components/HeaderComponent.vue';
+import SectionComponent from '@/views/client/home/components/SectionComponent.vue';
 import { ref } from 'vue';
 
 const carouselImages = ref([

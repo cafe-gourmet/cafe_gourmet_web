@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/login/LoginView.vue';
 import RegisterView from '@/views/register/RegisterView.vue';
-import HomeView from '@/views/home/HomeView.vue';
-import ProductsView from '@/views/products/ProductsView.vue';
+import HomeClientView from '@/views/client/home/HomeView.vue';
+import HomeAdminView from '@/views/admin/home/HomeView.vue';
+import ProductsView from '@/views/client/products/ProductsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,14 +19,36 @@ const router = createRouter({
       component: RegisterView
     },
     {
-      path: '/home',
-      name: 'home',
-      component: HomeView
+      path: '/client',
+      name: 'client',
+      children: [
+        {
+          path: '',
+          name: 'client.home',
+          component: HomeClientView
+        },
+        {
+          path: 'products',
+          name: 'client.products',
+          component: ProductsView
+        }
+      ]
     },
     {
-      path: '/products',
-      name: 'products',
-      component: ProductsView
+      path: '/admin',
+      name: 'admin',
+      children: [
+        {
+          path: '',
+          name: 'admin.home',
+          component: HomeAdminView
+        },
+        {
+          path: 'users',
+          name: 'admin.users',
+          component: ProductsView
+        }
+      ]
     }
   ]
 });
