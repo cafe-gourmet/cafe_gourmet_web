@@ -1,4 +1,5 @@
 import AxiosAdapter from '@/config/AxiosAdapter';
+import type { Auth } from '@/entity/Auth';
 import type { User } from '@/entity/User';
 
 export default class UserServices {
@@ -7,8 +8,8 @@ export default class UserServices {
     return roles;
   }
 
-  static async login(email: string, password: string): Promise<string[]> {
-    const roles: string[] = await AxiosAdapter.post('');
+  static async login(auth: Auth): Promise<string[]> {
+    const roles: string[] = await AxiosAdapter.auth('autenticacao/login',auth);
     return roles;
   }
 }
