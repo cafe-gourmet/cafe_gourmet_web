@@ -18,7 +18,7 @@ export default class AxiosAdapter {
   }
 
   static async post(url: string, data?: any) {
-    console.log(data, url, this.baseUrl)
+    console.log(data, url, this.baseUrl);
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'post',
@@ -30,9 +30,9 @@ export default class AxiosAdapter {
     });
     return response.data;
   }
-  
+
   static async auth(url: string, data?: any) {
-    console.log(data, url, this.baseUrl)
+    console.log(data, url, this.baseUrl);
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'post',
@@ -72,8 +72,8 @@ export default class AxiosAdapter {
   private static getAuthToken(): string {
     return AuthStore.getters.getTokenJwt;
   }
-  private static setAuthToken(token : string): string {
-    return AuthStore.state.tokenJwt = token;
+  private static setAuthToken(token: string) {
+    AuthStore.commit('setTokenJwt', token);
   }
   private static getUserRoles(): string[] {
     return AuthStore.getters.getUserRoles;
