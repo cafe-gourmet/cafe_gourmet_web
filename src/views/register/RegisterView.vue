@@ -217,6 +217,7 @@
 
 <script setup lang="ts">
 import { User } from '@/entity/User';
+import router from '@/router';
 import { ExternalServices } from '@/services/ExternalServices';
 import UserServices from '@/services/UserServices';
 import Rules from '@/utils/rules';
@@ -276,6 +277,7 @@ async function cadastrate() {
     userRequest.fotoPerfil = selectedImage.value;
     const response = await UserServices.register(userRequest);
     console.log('response', response);
+    router.push('/')
   } catch (error) {
     toast.error('Ocorreu um erro ao cadastrar o usuário, tente novamente.');
   } finally {

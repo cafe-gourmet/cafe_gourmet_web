@@ -37,7 +37,7 @@ const cardOptions = [
   {
     icon: 'mdi-coffee-outline',
     text: 'Produtos',
-    redirect: '/admin/users'
+    redirect: '/admin/products'
   },
   {
     icon: 'mdi-calendar-month-outline',

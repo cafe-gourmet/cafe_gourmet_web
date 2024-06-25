@@ -18,7 +18,7 @@ export default class AxiosAdapter {
   }
 
   static async post(url: string, data?: any) {
-    console.log(data, url, this.baseUrl)
+    console.log(data, url, this.baseUrl);
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'post',
@@ -28,6 +28,18 @@ export default class AxiosAdapter {
         roles: this.getUserRoles()
       }
     });
+    return response.data;
+  }
+
+  static async auth(url: string, data?: any) {
+    console.log(data, url, this.baseUrl);
+    const response = await axios({
+      url: `${this.baseUrl}${url}`,
+      method: 'post',
+      data
+    });
+
+    this.setAuthToken(response.data.access_token);
     return response.data;
   }
 
@@ -60,7 +72,9 @@ export default class AxiosAdapter {
   private static getAuthToken(): string {
     return AuthStore.getters.getTokenJwt;
   }
-
+  private static setAuthToken(token: string) {
+    AuthStore.commit('setTokenJwt', token);
+  }
   private static getUserRoles(): string[] {
     return AuthStore.getters.getUserRoles;
   }
