@@ -1,5 +1,6 @@
 import type { User } from '@/entity/User';
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export interface AuthState {
   user: User;
@@ -36,7 +37,14 @@ const AuthStore = createStore<AuthState>({
     getTokenJwt(state: AuthState) {
       return state.tokenJwt;
     }
-  }
+  },
+  plugins: [
+    createPersistedState({
+      key: 'authStore',
+      paths: ['user', 'userRoles', 'tokenJwt'],
+      storage: window.localStorage
+    })
+  ]
 });
 
 export default AuthStore;

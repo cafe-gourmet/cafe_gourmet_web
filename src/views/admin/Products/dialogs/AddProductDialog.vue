@@ -44,13 +44,14 @@
               <v-autocomplete
                 clearable
                 label="Categoria do Produto"
-                v-model="newProduct.idCategoria"
+                v-model="categorySelected"
+                item-title="nome"
+                item-value="id"
                 bg-color="secondary"
                 base-color="primary"
                 item-color="secondary"
-                list
                 color="primary"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                :items="categories"
                 variant="solo"
               />
             </v-col>
@@ -168,7 +169,13 @@
             class="mr-4 btn-full"
             @click="$emit('close')"
           />
-          <v-btn text="confirmar" class="btn-full btn-confirmar" size="large" color="secondary text-primary" />
+          <v-btn
+            text="confirmar"
+            class="btn-full btn-confirmar"
+            size="large"
+            color="secondary text-primary"
+            @click="addOrEditProduct()"
+          />
         </div>
       </div>
     </v-card>
@@ -176,15 +183,86 @@
 </template>
 
 <script setup lang="ts">
-import { Product } from '@/entity/Product';
-import { ref } from 'vue';
+import { Category } from '@/entity/Category';
+import CategoryServices from '@/services/CategoryServices';
+import ProductServices from '@/services/ProductServices';
+import { ProductRequestDTO } from '@/types/requests/admin/ProductRequestDTO';
+import { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
+import { onMounted, ref, watch } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useStore } from 'vuex';
 
 const props = defineProps(['show', 'product']);
 const file1 = ref(undefined);
 const file2 = ref(undefined);
 const file3 = ref(undefined);
 const carouselImages = ref([undefined, undefined, undefined]);
-const newProduct = ref(props.product ? props.product : new Product());
+const categories = ref<Category[]>([]);
+const categorySelected = ref(0);
+const newProduct = ref(props.product || new ProductResponseDTO());
+const store = useStore();
+const toast = useToast();
+
+watch(
+  () => props.product,
+  (newValue) => {
+    if (newValue) {
+      newProduct.value = newValue;
+      categorySelected.value = newValue.categoria.id;
+    } else {
+      newProduct.value = new ProductResponseDTO();
+    }
+  }
+);
+
+onMounted(async () => await getCategories());
+
+async function getCategories() {
+  try {
+    const response = await CategoryServices.getAll(store);
+    categories.value = response ? response : [{ id: 0, nome: '' }];
+    categorySelected.value = categories.value[0].id;
+  } catch (error) {
+    console.error('Erro ao buscar categorias:', error);
+    toast.error('Ocorreu um erro ao buscar as categorias.');
+  }
+}
+
+async function addOrEditProduct() {
+  if (!props.product) {
+    await addProduct();
+  } else {
+    await editProduct();
+  }
+}
+
+async function addProduct() {
+  try {
+    newProduct.value.idCategoria = categorySelected;
+    await ProductServices.add(
+      ProductRequestDTO.createByProductResponseDTO(newProduct.value),
+      store
+    );
+    window.location.reload();
+  } catch (error) {
+    console.error(error);
+    toast.error('Ocorreu um erro ao criar seu produto, verifique os campos e tente novamente.');
+  }
+}
+
+async function editProduct() {
+  try {
+    newProduct.value.idCategoria = categorySelected;
+    await ProductServices.edit(
+      ProductRequestDTO.createByProductResponseDTO(newProduct.value),
+      store
+    );
+    window.location.reload();
+  } catch (error) {
+    console.error(error);
+    toast.error('Ocorreu um erro ao editar seu produto, verifique os campos e tente novamente.');
+  }
+}
 
 function saveFileImageString(file: any, position: number) {
   if (!file) return;
@@ -194,17 +272,15 @@ function saveFileImageString(file: any, position: number) {
   reader.onload = async (event: any) => {
     //@ts-ignore
     const fileContent: never = event.target.result;
-    carouselImages.value[position] = fileContent; // For preview
+    carouselImages.value[position] = fileContent;
   };
 
-  // Read the file as a Data URL
   reader.readAsDataURL(file);
 }
 
 function clearFileInput(position: number) {
   //@ts-ignore
   carouselImages.value.splice(position, 1);
-  console.log(carouselImages.value);
 }
 
 function haveImage() {

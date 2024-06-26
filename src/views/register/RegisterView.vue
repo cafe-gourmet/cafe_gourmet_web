@@ -275,9 +275,8 @@ async function cadastrate() {
     loadingCadastrate.value = true;
     const userRequest = user.value;
     userRequest.fotoPerfil = selectedImage.value;
-    const response = await UserServices.register(userRequest);
-    console.log('response', response);
-    router.push('/')
+    await UserServices.register(userRequest);
+    router.push('/');
   } catch (error) {
     toast.error('Ocorreu um erro ao cadastrar o usuário, tente novamente.');
   } finally {
