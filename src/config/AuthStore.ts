@@ -1,4 +1,5 @@
-import type { User } from '@/entity/User';
+import { User } from '@/entity/User';
+import router from '@/router';
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
@@ -25,6 +26,11 @@ const AuthStore = createStore<AuthState>({
     },
     setTokenJwt(state: AuthState, tokenJwt: string) {
       state.tokenJwt = tokenJwt;
+    },
+    logout(state) {
+      state.user = new User();
+      state.userRoles = [];
+      state.tokenJwt = '';
     }
   },
   getters: {
@@ -36,6 +42,12 @@ const AuthStore = createStore<AuthState>({
     },
     getTokenJwt(state: AuthState) {
       return state.tokenJwt;
+    }
+  },
+  actions: {
+    logout({ commit }) {
+      commit('logout');
+      router.push('/');
     }
   },
   plugins: [

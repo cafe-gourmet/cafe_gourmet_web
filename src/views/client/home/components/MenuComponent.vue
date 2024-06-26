@@ -30,7 +30,7 @@
         <v-col cols="12" class="font-weight-bold"> Quer trocar de conta? </v-col>
       </v-row>
       <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
-      <div class="mt-4 mb-2 cursor-pointer" @click="router.push('/')">Sair</div>
+      <div class="mt-4 mb-2 cursor-pointer" @click="logout()">Sair</div>
     </v-card>
     <v-card width="100%" height="100%" style="background-color: transparent" :onclick="close" />
   </v-container>
@@ -38,12 +38,19 @@
 
 <script setup lang="ts">
 import router from '@/router';
+import UserServices from '@/services/UserServices';
+import { useStore } from 'vuex';
 
 const props = defineProps(['show']);
 const emit = defineEmits(['close']);
+const store = useStore()
 
 function close() {
   emit('close');
+}
+
+function logout() {
+  UserServices.logout(store);
 }
 </script>
 

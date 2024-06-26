@@ -14,6 +14,15 @@ export default class AxiosAdapter {
     return response.data.access_token;
   }
 
+  static async register(url: string, data: any) {
+    const response = await axios({
+      url: `${this.baseUrl}${url}`,
+      method: 'post',
+      data
+    });
+    return response.data;
+  }
+
   static async get(url: string, store: Store<AuthState>, params?: any) {
     const response = await axios({
       url: `${this.baseUrl}${url}`,

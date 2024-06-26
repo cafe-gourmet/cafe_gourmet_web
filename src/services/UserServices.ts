@@ -6,12 +6,16 @@ import type { Store } from 'vuex';
 
 export default class UserServices {
   static async register(user: User): Promise<string[]> {
-    const roles = await AxiosAdapter.post('usuario', user);
+    const roles = await AxiosAdapter.register('usuario', user);
     return roles;
   }
 
-  static async login(auth: Auth, store: Store<AuthState>): Promise<string[]> {
-    const roles: string[] = await AxiosAdapter.auth('autenticacao/login', auth, store);
+  static async login(auth: Auth): Promise<string[]> {
+    const roles: string[] = await AxiosAdapter.auth('autenticacao/login', auth);
     return roles;
+  }
+
+  static logout(store: Store<AuthState>): void {
+    store.dispatch('logout');
   }
 }
