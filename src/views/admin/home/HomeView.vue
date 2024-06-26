@@ -30,6 +30,11 @@ const cardOptions = [
     redirect: '/admin/users'
   },
   {
+    icon: 'mdi-view-list-outline',
+    text: 'Categorias',
+    redirect: '/admin/categories'
+  },
+  {
     icon: 'mdi-briefcase-account-outline',
     text: 'Cargos',
     redirect: '/admin/users'

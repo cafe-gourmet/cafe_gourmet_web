@@ -90,13 +90,14 @@ import { useStore } from 'vuex';
 import type { AuthState } from '@/config/AuthStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
 import type { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
+import { useToast } from 'vue-toastification';
 
 const search = ref('');
 const showAddProductDialog = ref(false);
 const showDeleteProductDialog = ref(false);
 const productSelected = ref(undefined);
 const products = ref<ProductResponseDTO[]>([]);
-
+const toast = useToast();
 const store = useStore<AuthState>();
 
 onMounted(async () => await getProducts());
@@ -107,6 +108,7 @@ async function getProducts() {
     products.value = response ? response : [];
   } catch (error) {
     console.error('Erro ao buscar produtos:', error);
+    toast.error('Ocorreu um erro ao tentar buscar os produtos.');
   }
 }
 
@@ -142,64 +144,6 @@ const tableHeaders = [
   { title: 'Desconto Anual', value: 'percentualDescontoAnual', align: 'center' },
   { title: 'Ações', key: 'actions', sortable: false }
 ];
-
-// const products: Product[] = [
-//   {
-//     id: 1,
-//     nome: 'Produto A',
-//     marca: 'Marca X',
-//     preco: 100.0,
-//     codigoBarras: '1234567890123',
-//     idCategoria: 1,
-//     quantidade: 50,
-//     percentualDescontoMensal: 5,
-//     percentualDescontoAnual: 10
-//   },
-//   {
-//     id: 2,
-//     nome: 'Produto B',
-//     marca: 'Marca Y',
-//     preco: 200.5,
-//     codigoBarras: '0987654321098',
-//     idCategoria: 2,
-//     quantidade: 30,
-//     percentualDescontoMensal: 10,
-//     percentualDescontoAnual: 15
-//   },
-//   {
-//     id: 3,
-//     nome: 'Produto C',
-//     marca: 'Marca Z',
-//     preco: 300.75,
-//     codigoBarras: '1122334455667',
-//     idCategoria: 3,
-//     quantidade: 20,
-//     percentualDescontoMensal: 8,
-//     percentualDescontoAnual: 12
-//   },
-//   {
-//     id: 4,
-//     nome: 'Produto D',
-//     marca: 'Marca W',
-//     preco: 150.25,
-//     codigoBarras: '2233445566778',
-//     idCategoria: 4,
-//     quantidade: 40,
-//     percentualDescontoMensal: 6,
-//     percentualDescontoAnual: 11
-//   },
-//   {
-//     id: 5,
-//     nome: 'Produto E',
-//     marca: 'Marca V',
-//     preco: 250.0,
-//     codigoBarras: '3344556677889',
-//     idCategoria: 5,
-//     quantidade: 60,
-//     percentualDescontoMensal: 7,
-//     percentualDescontoAnual: 13
-//   }
-// ];
 </script>
 
 <style scoped>
