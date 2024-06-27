@@ -10,7 +10,7 @@
       :items="productItems"
       redirect="/client/products"
     />
-    <section-component title="Nossos Planos" text-button="todos os planos" :items="planItems" redirect="/plans"/>
+    <section-component title="Nossos Planos" text-button="todos os planos" :items="planItems" redirect="/client/plans"/>
   </v-container>
 </template>
 

@@ -13,7 +13,7 @@
           align-self="end"
           style="display: flex; justify-content: end; align-items: end"
         >
-          <v-btn variant="outlined">
+          <v-btn color="secondary">
             <v-icon icon="mdi-filter-outline" size="25" />
           </v-btn>
         </v-col>

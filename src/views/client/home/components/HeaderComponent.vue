@@ -20,15 +20,15 @@
           @click:append-inner="() => {}"
         />
       </v-col>
-      <v-col cols="3" class="py-4 px-0" >
-        <div style="display: flex; justify-content: end;">
+      <v-col cols="3" class="py-4 px-0">
+        <div style="display: flex; justify-content: end">
           <v-badge :content="0" color="primary" class="cursor-pointer mr-1">
             <v-icon color="primary" size="2.2rem">mdi-shopping-outline</v-icon>
           </v-badge>
           <v-icon
             color="primary"
             size="2.2rem"
-            class="cursor-pointer mr-1"
+            class="cursor-pointer user-icon"
             icon="mdi-account-circle-outline"
             @click="showUserDialog = true"
           />
@@ -60,5 +60,15 @@ const showUserDialog = ref(false);
   padding: 8px 10px 8px 10px;
   box-sizing: border-box;
   max-width: calc(100vw - 16px);
+}
+.user-icon {
+  margin-right: 6px;
+}
+
+@media (min-width: 500px) {
+  .user-icon {
+    margin-right: 20px;
+    margin-left: 10px;
+  }
 }
 </style>
