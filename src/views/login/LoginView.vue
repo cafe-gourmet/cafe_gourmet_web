@@ -42,6 +42,7 @@
   import { useToast } from 'vue-toastification';
   import { Auth } from '@/entity/Auth';
   import UserServices from '@/services/UserServices';
+  import router from '@/router';
 
   const loadingAuth = ref(false);
   const toast = useToast();
@@ -56,6 +57,7 @@
       toast.error('Email ou senha errados!');
     } finally {
       loadingAuth.value = false;
+      router.push('/client');
     }
   }
 </script>
