@@ -1,5 +1,4 @@
 import type { Category } from '@/entity/Category';
-import type { Plan } from '@/entity/Plan';
 
 export class ProductResponseDTO {
   id: number;
@@ -12,6 +11,7 @@ export class ProductResponseDTO {
   percentualDescontoMensal: number;
   percentualDescontoAnual: number;
   categoria: Category;
-  planos: Plan;
-  anexos: object[];
+  imgProduto1?: string;
+  imgProduto2?: string;
+  imgProduto3?: string;
 }

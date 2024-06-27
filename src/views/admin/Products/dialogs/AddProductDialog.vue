@@ -196,7 +196,7 @@ const props = defineProps(['show', 'product']);
 const file1 = ref(undefined);
 const file2 = ref(undefined);
 const file3 = ref(undefined);
-const carouselImages = ref([undefined, undefined, undefined]);
+const carouselImages = ref<(string | undefined)[]>([undefined, undefined, undefined]);
 const categories = ref<Category[]>([]);
 const categorySelected = ref(0);
 const newProduct = ref(props.product || new ProductResponseDTO());
@@ -209,6 +209,11 @@ watch(
     if (newValue) {
       newProduct.value = newValue;
       categorySelected.value = newValue.categoria.id;
+      carouselImages.value = [
+        newProduct.value.imgProduto1,
+        newProduct.value.imgProduto2,
+        newProduct.value.imgProduto3
+      ];
     } else {
       newProduct.value = new ProductResponseDTO();
     }
@@ -273,6 +278,9 @@ function saveFileImageString(file: any, position: number) {
     //@ts-ignore
     const fileContent: never = event.target.result;
     carouselImages.value[position] = fileContent;
+    if (position === 0) newProduct.value.imgProduto1 = fileContent;
+    if (position === 1) newProduct.value.imgProduto2 = fileContent;
+    if (position === 2) newProduct.value.imgProduto3 = fileContent;
   };
 
   reader.readAsDataURL(file);
@@ -281,6 +289,9 @@ function saveFileImageString(file: any, position: number) {
 function clearFileInput(position: number) {
   //@ts-ignore
   carouselImages.value.splice(position, 1);
+  if (position === 0) newProduct.value.imgProduto1 = '';
+  if (position === 1) newProduct.value.imgProduto2 = '';
+  if (position === 2) newProduct.value.imgProduto3 = '';
 }
 
 function haveImage() {

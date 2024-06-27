@@ -10,6 +10,9 @@ export class ProductRequestDTO {
   quantidade: number;
   percentualDescontoMensal: number;
   percentualDescontoAnual: number;
+  imgProduto1?: string;
+  imgProduto2?: string;
+  imgProduto3?: string;
 
   static createByProductResponseDTO(product: ProductResponseDTO) {
     const productRequestDTO = new ProductRequestDTO();
@@ -22,6 +25,9 @@ export class ProductRequestDTO {
     productRequestDTO.quantidade = Number(product.quantidade);
     productRequestDTO.percentualDescontoMensal = Number(product.percentualDescontoMensal);
     productRequestDTO.percentualDescontoAnual = Number(product.percentualDescontoAnual);
+    productRequestDTO.imgProduto1 = product.imgProduto1;
+    productRequestDTO.imgProduto2 = product.imgProduto2;
+    productRequestDTO.imgProduto3 = product.imgProduto3;
     return productRequestDTO;
   }
 }

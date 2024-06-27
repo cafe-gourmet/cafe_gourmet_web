@@ -156,7 +156,7 @@ const props = defineProps(['show', 'plan']);
 const file1 = ref(undefined);
 const file2 = ref(undefined);
 const file3 = ref(undefined);
-const carouselImages = ref([undefined, undefined, undefined]);
+const carouselImages = ref<(string | undefined)[]>([undefined, undefined, undefined]);
 const periodSelected = ref(1);
 const newPlan = ref<Plan>(props.plan || new Plan());
 const store = useStore();
@@ -168,6 +168,11 @@ watch(
     if (newValue) {
       newPlan.value = newValue;
       periodSelected.value = newValue.idPeriodo;
+      carouselImages.value = [
+        newPlan.value.imgPlano1,
+        newPlan.value.imgPlano2,
+        newPlan.value.imgPlano3
+      ];
     } else {
       newPlan.value = new Plan();
     }
@@ -214,6 +219,9 @@ function saveFileImageString(file: any, position: number) {
     //@ts-ignore
     const fileContent: never = event.target.result;
     carouselImages.value[position] = fileContent;
+    if (position === 0) newPlan.value.imgPlano1 = fileContent;
+    if (position === 1) newPlan.value.imgPlano2 = fileContent;
+    if (position === 2) newPlan.value.imgPlano3 = fileContent;
   };
 
   reader.readAsDataURL(file);
@@ -222,6 +230,9 @@ function saveFileImageString(file: any, position: number) {
 function clearFileInput(position: number) {
   //@ts-ignore
   carouselImages.value.splice(position, 1);
+  if (position === 0) newPlan.value.imgPlano1 = '';
+  if (position === 1) newPlan.value.imgPlano2 = '';
+  if (position === 2) newPlan.value.imgPlano3 = '';
 }
 
 function haveImage() {
