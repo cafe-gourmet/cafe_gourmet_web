@@ -13,7 +13,7 @@ export class ProductRequestDTO {
 
   static createByProductResponseDTO(product: ProductResponseDTO) {
     const productRequestDTO = new ProductRequestDTO();
-    productRequestDTO.id = product.id;
+    productRequestDTO.id = Number(product.id);
     productRequestDTO.nome = product.nome;
     productRequestDTO.marca = product.marca;
     productRequestDTO.preco = Number(product.preco);

@@ -7,7 +7,7 @@
       elevation="24"
     >
       <template v-slot:title>
-        <div class="mt-4 mb-4 break-text">Gerenciar Produtos</div>
+        <div class="mt-4 mb-4 break-text">Gerenciar Planos</div>
       </template>
       <template v-slot:text>
         <v-row style="width: 100%" justify="space-between">
@@ -16,7 +16,7 @@
               v-model="search"
               bg-color="secondary"
               color="primary"
-              label="Buscar produto"
+              label="Buscar plano"
               append-inner-icon="mdi-magnify"
               variant="outlined"
               hide-details
@@ -30,7 +30,7 @@
               color="secondary text-primary"
               class="btn-add"
               append-icon="mdi-plus"
-              @click="openAddProductDialog()"
+              @click="openAddPlanDialog()"
             />
           </v-col>
         </v-row>
@@ -38,110 +38,107 @@
       <div class="pr-8">
         <v-data-table
           :headers="tableHeaders"
-          :items="products"
+          :items="plans"
           :search="search"
           :hover="true"
           style="max-width: 100%; border-radius: 5px"
           class="ma-4 bg-secondary text-primary"
-          no-data-text="Nenhum produto encontrado"
+          no-data-text="Nenhum plano encontrado"
           items-per-page-text="Itens por página"
         >
           <template v-slot:[`item.preco`]="{ item }">
             <span>{{ 'R$ ' + formatCurrency(item.preco) }}</span>
           </template>
 
-          <template v-slot:[`item.percentualDescontoMensal`]="{ item }">
-            <span>{{ item.percentualDescontoMensal + '%' }}</span>
+          <template v-slot:[`item.idPeriodo`]="{ item }">
+            <span>{{ item.idPeriodo === 1 ? 'mensal' : 'anual' }}</span>
           </template>
 
-          <template v-slot:[`item.percentualDescontoAnual`]="{ item }">
-            <span>{{ item.percentualDescontoAnual + '%' }}</span>
+          <template v-slot:[`item.idSituacao`]="{ item }">
+            <span>{{ item.idSituacao === 1 ? 'Ativo' : 'Inativo' }}</span>
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
             <div style="display: flex">
-              <v-icon @click="openEditProductDialog(item)"> mdi-pencil </v-icon>
-              <v-icon @click="openDeleteProductDialog(item)"> mdi-delete </v-icon>
+              <v-icon @click="openEditPlanDialog(item)"> mdi-pencil </v-icon>
+              <v-icon @click="openDeletePlanDialog(item)"> mdi-delete </v-icon>
             </div>
           </template>
         </v-data-table>
       </div>
     </v-card>
-    <delete-product-dialog
-      :show="showDeleteProductDialog"
-      :product="productSelected"
-      @close="showDeleteProductDialog = false"
+    <delete-plan-dialog
+      :show="showDeletePlantDialog"
+      :plan="planSelected"
+      @close="showDeletePlantDialog = false"
     />
-    <add-product-dialog
-      :show="showAddProductDialog"
-      :product="productSelected"
-      @close="showAddProductDialog = false"
+    <add-plan-dialog
+      :show="showAddPlanDialog"
+      :plan="planSelected"
+      @close="showAddPlanDialog = false"
     />
   </v-container>
 </template>
 
 <script setup lang="ts">
-import AddProductDialog from './dialogs/AddProductDialog.vue';
-import DeleteProductDialog from './dialogs/DeleteProductDialog.vue';
+import AddPlanDialog from './dialogs/AddPlanDialog.vue';
+import DeletePlanDialog from './dialogs/DeletePlanDialog.vue';
 import HeaderComponent from '../home/components/HeaderComponent.vue';
 import { onMounted, ref } from 'vue';
-import ProductServices from '@/services/ProductServices';
 import { useStore } from 'vuex';
 import type { AuthState } from '@/config/AuthStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
-import type { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
 import { useToast } from 'vue-toastification';
+import type { Plan } from '@/entity/Plan';
+import PlanServices from '@/services/PlanServices';
 
 const search = ref('');
-const showAddProductDialog = ref(false);
-const showDeleteProductDialog = ref(false);
-const productSelected = ref(undefined);
-const products = ref<ProductResponseDTO[]>([]);
+const showAddPlanDialog = ref(false);
+const showDeletePlantDialog = ref(false);
+const planSelected = ref(undefined);
+const plans = ref<Plan[]>([]);
 const toast = useToast();
 const store = useStore<AuthState>();
 
-onMounted(async () => await getProducts());
+onMounted(async () => await getPlans());
 
-async function getProducts() {
+async function getPlans() {
   try {
-    const response = await ProductServices.getAll(store);
-    products.value = response ? response : [];
+    const response = await PlanServices.getAll(store);
+    plans.value = response ? response : [];
   } catch (error) {
-    console.error('Erro ao buscar produtos:', error);
-    toast.error('Ocorreu um erro ao tentar buscar os produtos.');
+    console.error('Erro ao buscar planos:', error);
+    toast.error('Ocorreu um erro ao tentar buscar os planos.');
   }
 }
 
-function openAddProductDialog() {
-  productSelected.value = undefined;
-  showAddProductDialog.value = true;
+function openAddPlanDialog() {
+  planSelected.value = undefined;
+  showAddPlanDialog.value = true;
 }
 
-function openDeleteProductDialog(item: any) {
-  productSelected.value = item;
-  showDeleteProductDialog.value = true;
+function openDeletePlanDialog(item: any) {
+  planSelected.value = item;
+  showDeletePlantDialog.value = true;
 }
 
-function openEditProductDialog(item: any) {
-  productSelected.value = item;
-  showAddProductDialog.value = true;
+function openEditPlanDialog(item: any) {
+  planSelected.value = item;
+  showAddPlanDialog.value = true;
 }
 
 const tableHeaders = [
   { title: 'ID', value: 'id' },
   { title: 'Nome', value: 'nome', align: 'center' },
-  { title: 'Marca', value: 'marca', align: 'center' },
   {
     title: 'Preço',
-    key: 'preco',
-    value: (item: ProductResponseDTO) => `${item.preco}`,
+    value: 'preco',
     sortable: false,
     align: 'center'
   },
-  { title: 'Categoria', value: 'categoria.nome', align: 'center' },
-  { title: 'Quantidade', value: 'quantidade', align: 'center' },
-  { title: 'Desconto Mensal', value: 'percentualDescontoMensal', align: 'center' },
-  { title: 'Desconto Anual', value: 'percentualDescontoAnual', align: 'center' },
+  { title: 'Descrição', value: 'descricao', align: 'center' },
+  { title: 'Situação', value: 'idSituacao', align: 'center' },
+  { title: 'Período', value: 'idPeriodo', align: 'center' },
   { title: 'Ações', key: 'actions', sortable: false }
 ];
 </script>

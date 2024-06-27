@@ -46,8 +46,8 @@ const cardOptions = [
   },
   {
     icon: 'mdi-calendar-month-outline',
-    text: 'Assinaturas',
-    redirect: '/admin/users'
+    text: 'Planos',
+    redirect: '/admin/plans'
   },
   {
     icon: 'mdi-file-chart-outline',
