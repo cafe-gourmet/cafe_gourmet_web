@@ -51,7 +51,7 @@
         <span class="font-weight-bold"> {{ quantity }} </span>
         <v-icon icon="mdi-plus-circle-outline" class="mx-2" @click="addQuantity" />
       </div>
-      <v-btn color="primary" class="my-4">Adicionar ao Carrinho</v-btn>
+      <v-btn v-if="!props.cart" color="primary" class="my-4">Adicionar ao Carrinho</v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const props = defineProps(['show']);
+const props = defineProps(['show', 'cart']);
 
 const quantity = ref(0);
 

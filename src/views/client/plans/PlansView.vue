@@ -20,7 +20,7 @@
       </v-row>
       <v-row class="mt-8">
         <v-col
-          v-for="(item, index) in items"
+          v-for="(item, index) in planItems"
           :key="index"
           cols="6"
           sm="3"
@@ -28,11 +28,7 @@
           lg="2"
           align-self="center"
         >
-          <item-component
-            :text="item.text"
-            :amount="item.amount"
-            @click="showProductItemDialog = true"
-          />
+          <item-component :item="item" @click="showProductItemDialog = true" />
         </v-col>
       </v-row>
     </v-container>
@@ -44,22 +40,28 @@
 import HeaderComponent from './../home/components/HeaderComponent.vue';
 import ItemComponent from '../home/components/ItemComponent.vue';
 import ProductItemDialog from '../products/dialogs/ProductItemDialog.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import type { Plan } from '@/entity/Plan';
+import PlanServices from '@/services/PlanServices';
+import { useStore } from 'vuex';
+import { useToast } from 'vue-toastification';
 
+const store = useStore();
+const toast = useToast();
 const showProductItemDialog = ref(false);
+const planItems = ref<Plan[]>([])
 
-const items = [
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' }
-];
+onMounted(async () => await getPlans());
+
+async function getPlans() {
+  try {
+    const response = await PlanServices.getAll(store);
+    planItems.value = response ? response : [];
+  } catch (error) {
+    console.error('Erro ao buscar planos:', error);
+    toast.error('Ocorreu um erro ao tentar buscar os planos.');
+  }
+}
 </script>
 
 <style scoped>

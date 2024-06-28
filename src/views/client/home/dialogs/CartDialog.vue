@@ -36,16 +36,19 @@
                     <div class="mt-2 text-h6">{{ product.nome }}</div>
                     <div class="mt-2 text-subtitle-1">
                       Quantidade:
-                      <v-icon>mdi-minus</v-icon>
                       <span>{{ product.quantidadeSelecionada }}</span>
-                      <v-icon>mdi-plus</v-icon>
                     </div>
                     <div class="mt-2 text-subtitle-1">
-                      <span>visualizar</span>
-                      <span class="ml-4">excluir</span>
+                      <span class="cursor-pointer" @click="showProductItemDialog = true"
+                        >visualizar</span
+                      >
+                      <span class="ml-4 cursor-pointer" @click="excludeProduct(product.id)"
+                        >excluir</span
+                      >
                     </div>
                     <div class="text-subtitle-1 mt-2">R$ {{ formatCurrency(product.preco) }}</div>
                   </v-col>
+                  <div>{{ calculateTotal() }}</div>
                 </v-row>
               </v-card>
             </v-col>
@@ -69,14 +72,17 @@
                 <v-col cols="12" sm="12" md="8" lg="8">
                   <div class="mt-2 text-h6">{{ cart.plan?.nome }}</div>
                   <div class="mt-2 text-subtitle-1">
-                    <span>visualizar</span>
-                    <span class="ml-4">excluir</span>
+                    <span class="cursor-pointer" @click="showProductItemDialog = true"
+                      >visualizar</span
+                    >
+                    <span class="ml-4 cursor-pointer" @click="excludePlan()">excluir</span>
                   </div>
                   <div class="text-subtitle-1 mt-2">
                     R$ {{ formatCurrency(cart.plan ? cart.plan.preco : 0) }}
                   </div>
                 </v-col>
               </v-row>
+              <div>{{ calculateTotal() }}</div>
             </v-card>
           </v-col>
         </div>
@@ -109,10 +115,12 @@
         </v-row>
       </div>
     </v-card>
+    <product-item-dialog :show="showProductItemDialog" @close="showProductItemDialog = false" :cart="true" />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
+import ProductItemDialog from '../../products/dialogs/ProductItemDialog.vue';
 import type { CartStore, MainState } from '@/config/MainStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
 import { onMounted, ref, watch } from 'vue';
@@ -124,23 +132,46 @@ const cart = ref<CartStore>(store.getters.getCart);
 const totalPrice = ref(0);
 const totalPriceMonthly = ref(0);
 const totalPriceYear = ref(0);
+const showProductItemDialog = ref(false);
 
 onMounted(() => {
-  calculateTotalPrice();
-  calculateTotalMonthly();
-  calculateTotalYear();
+  calculateTotal();
 });
+
+function excludeProduct(id: number) {
+  store.commit('removeProductInCart', id);
+  calculateTotal();
+}
+
+function excludePlan() {
+  store.commit('removePlanInCart');
+  calculateTotal();
+}
 
 watch(
   () => props.show,
   (newValue) => {
     if (newValue) {
-      calculateTotalPrice();
-      calculateTotalMonthly();
-      calculateTotalYear();
+      calculateTotal();
     }
   }
 );
+
+watch(
+  () => store.getters.getCart.products,
+  (newValue) => {
+    if (newValue) {
+      calculateTotal();
+    }
+  }
+);
+
+function calculateTotal() {
+  calculateTotalPrice();
+  calculateTotalMonthly();
+  calculateTotalYear();
+  return '';
+}
 
 function calculateTotalPrice() {
   let total = 0;
