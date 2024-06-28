@@ -220,11 +220,12 @@ import type { UserAddress } from '@/entity/User';
 import { User } from '@/entity/User';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
-import { AuthUser } from '@/entity/AuthUser';
+import { AuthUser, AuthUserAdress, AuthUserClient, AuthUserRole } from '@/entity/AuthUser';
 import { useStore } from 'vuex';
+import UserServices from '@/services/UserServices';
+import type { MainState } from '@/config/MainStore';
 
 const props = defineProps(['show']);
-const user = ref(new User());
 var userAuth = ref(new AuthUser());
 const changePassword = ref({ password: '', newPassword: '', newPasswordRepeated: '' });
 const toast = useToast();
@@ -259,7 +260,7 @@ function onFileChange(event: Event) {
 async function findAddressByCep() {
   try {
     loadingFindCep.value = true;
-    const addressResponse = await ExternalServices.getAddressByCep(user.value.endereco.cep);
+    const addressResponse = await ExternalServices.getAddressByCep(userAuth.value.cliente!.endereco.cep);
     userAuth.value.cliente!.endereco.fillByApiCepResponse(addressResponse);
   } catch (error) {
     console.error(error);
@@ -269,19 +270,22 @@ async function findAddressByCep() {
 }
 
 function canCadastrateUser(): boolean {
-  const userValues: User = user.value;
+  const userValues: AuthUser = userAuth.value;
   let haveEmptyField: boolean = false;
 
-  Object.keys(userValues).map((field) => {
-    const fieldValue: string | UserAddress | null = userValues[field as keyof typeof userValues];
+  // Object.keys(userValues).map((field) => {
+  //   const fieldValue: string | number | AuthUserRole | AuthUserClient | undefined |null = userValues[field as keyof typeof userValues];
 
-    if (!fieldValue) {
-      haveEmptyField = true;
-    }
-  });
+  //   if (!fieldValue) {
+  //     haveEmptyField = true;
+  //   }
+  // });
 
-  if (!user.value.endereco.cep) haveEmptyField = true;
-  if (!user.value.endereco.numero) haveEmptyField = true;
+  if (!userAuth.value.cliente!.endereco.cep) haveEmptyField = true;
+  if (!userAuth.value.cliente!.endereco.numero) haveEmptyField = true;
+  if (!changePassword.value.newPassword) haveEmptyField = true;
+  if (!changePassword.value.newPasswordRepeated) haveEmptyField = true;
+  if (!changePassword.value.password) haveEmptyField = true;
 
   if (haveEmptyField) {
     toast.error('Preencha todos os campos.');
@@ -296,7 +300,17 @@ function canCadastrateUser(): boolean {
   return true;
 }
 
-function cadastrate() {
-  if (canCadastrateUser()) router.push('/client');
+async function cadastrate() {
+  try {
+    if (canCadastrateUser()){
+      const userRequest = userAuth.value;
+      userRequest.senha = changePassword.value.newPassword;
+      await UserServices.update(userRequest,store);
+      toast.success('Usuário atualizado com sucesso!!!');
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error('Ocorreu um erro ao cadastrar o usuário, tente novamente.');
+  }
 }
 </script>
