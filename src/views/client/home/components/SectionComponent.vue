@@ -12,7 +12,7 @@
           lg="3"
           align-self="center"
         >
-          <item-component :text="item.text" :amount="item.amount" />
+          <item-component :item="item" />
         </v-col>
       </v-row>
     </div>

@@ -14,5 +14,5 @@ export class ProductResponseDTO {
   imgProduto1?: string;
   imgProduto2?: string;
   imgProduto3?: string;
-  quantidadeSelected?: number;
+  quantidadeSelecionada: number = 0;
 }

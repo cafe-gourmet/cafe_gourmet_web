@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="container">
     <header-component />
-    <v-carousel color="primary" cycle height="300" style="width: 100vw; margin-top: 100px;" >
+    <v-carousel color="primary" cycle height="300" style="width: 100vw; margin-top: 100px">
       <v-carousel-item v-for="(image, index) in carouselImages" :key="index" :src="image" cover />
     </v-carousel>
     <section-component
@@ -10,14 +10,28 @@
       :items="productItems"
       redirect="/client/products"
     />
-    <section-component title="Nossos Planos" text-button="todos os planos" :items="planItems" redirect="/client/plans"/>
+    <section-component
+      title="Nossos Planos"
+      text-button="todos os planos"
+      :items="planItems"
+      redirect="/client/plans"
+    />
   </v-container>
 </template>
 
 <script setup lang="ts">
+import type { Plan } from '@/entity/Plan';
+import PlanServices from '@/services/PlanServices';
+import ProductServices from '@/services/ProductServices';
+import type { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
 import HeaderComponent from '@/views/client/home/components/HeaderComponent.vue';
 import SectionComponent from '@/views/client/home/components/SectionComponent.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const toast = useToast();
 
 const carouselImages = ref([
   'https://mediaserver.almg.gov.br/acervo/639/527/1639527.jpg',
@@ -25,19 +39,35 @@ const carouselImages = ref([
   'https://static.itdg.com.br/images/auto-auto/a28650d9a16731fcd02b535f3fca1fc8/shutterstock-529515136.jpg'
 ]);
 
-const productItems = [
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' },
-  { text: 'Café 3 corações, gourmet, dark roast - 250g', amount: 'R$ 20,00' }
-];
+const productItems = ref<ProductResponseDTO[]>([]);
+const planItems = ref<Plan[]>([]);
 
-const planItems = [
-  { text: 'Plano simlpes - mensal', amount: 'R$ 20,00/mês' },
-  { text: 'Plano simlpes - anual', amount: 'R$ 200,00/anual' },
-  { text: 'Plano premium - mensal', amount: 'R$ 30,00/mês' },
-  { text: 'Plano premium - anual', amount: 'R$ 300,00/anual' }
-];
+onMounted(async () => await getAllItems());
+
+async function getAllItems() {
+  await getProducts();
+  await getPlans()
+}
+
+async function getProducts() {
+  try {
+    const response = await ProductServices.getAll(store);
+    productItems.value = response ? response : [];
+  } catch (error) {
+    console.error('Erro ao buscar produtos:', error);
+    toast.error('Ocorreu um erro ao tentar buscar os produtos.');
+  }
+}
+
+async function getPlans() {
+  try {
+    const response = await PlanServices.getAll(store);
+    planItems.value = response ? response : [];
+  } catch (error) {
+    console.error('Erro ao buscar planos:', error);
+    toast.error('Ocorreu um erro ao tentar buscar os planos.');
+  }
+}
 </script>
 
 <style scoped>

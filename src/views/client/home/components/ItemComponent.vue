@@ -5,18 +5,33 @@
       width="150"
       style="border: 2px solid #5a2e2e; border-radius: 5px"
     />
-    <div class="mt-2" >{{ props.text }}</div>
+    <div class="mt-2">{{ props.item.nome }}</div>
     <v-row class="mt-4">
-      <v-col>{{ props.amount }}</v-col>
+      <v-col>R$ {{ formatCurrency(props.item.preco) }}</v-col>
     </v-row>
     <v-row class="pa-2">
-      <v-btn color="primary" width="100%">
-        <v-icon class="cursor-pointer" color="secondary" size="25">mdi-cart-plus</v-icon>
+      <v-btn color="primary" width="100%" @click="addItemToCart()">
+        <v-icon class="cursor-pointer" color="secondary" size="25"
+          >mdi-cart-plus</v-icon
+        >
       </v-btn>
     </v-row>
   </v-card>
 </template>
 
 <script setup lang="ts">
-const props = defineProps(['text', 'amount'])
+import type { MainState } from '@/config/MainStore';
+import { formatCurrency } from '@brazilian-utils/brazilian-utils';
+import { useStore } from 'vuex';
+
+const props = defineProps(['item']);
+const store = useStore<MainState>();
+
+function addItemToCart() {
+  if (props.item.descricao) {
+    store.commit('addPlanToCart', props.item);
+  } else {
+    store.commit('addProductToCart', props.item);
+  }
+}
 </script>

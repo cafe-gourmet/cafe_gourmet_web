@@ -5,7 +5,7 @@ import type { ProductResponseDTO } from '@/types/responses/admin/ProductResponse
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
-export interface cartStore {
+export interface CartStore {
   products: ProductResponseDTO[];
   plan: Plan | undefined;
   quantity: number;
@@ -15,7 +15,7 @@ export interface MainState {
   authUser: AuthUser | undefined;
   userRoles: string[];
   tokenJwt: string;
-  cart: cartStore;
+  cart: CartStore;
 }
 
 const MainStore = createStore<MainState>({
@@ -26,7 +26,7 @@ const MainStore = createStore<MainState>({
       tokenJwt: '',
       cart: {
         products: [] as ProductResponseDTO[],
-        plan: {} as Plan,
+        plan: undefined,
         quantity: 0
       }
     };
@@ -41,20 +41,35 @@ const MainStore = createStore<MainState>({
     setTokenJwt(state: MainState, tokenJwt: string) {
       state.tokenJwt = tokenJwt;
     },
-    addProductToCart(state: MainState, product: ProductResponseDTO) {
-      state.cart.products.push(product);
-      state.cart.quantity = state.cart.quantity++;
+    addProductToCart(state: MainState, newProduct: ProductResponseDTO) {
+      const productIndex: number = state.cart.products.findIndex(
+        (product) => newProduct.id === product.id
+      );
+
+      if (productIndex !== -1) {
+        state.cart.products[productIndex].quantidadeSelecionada = state.cart.products[
+          productIndex
+        ].quantidadeSelecionada += 1;
+      } else {
+        state.cart.products.push(newProduct);
+        newProduct.quantidadeSelecionada = 1;
+      }
+      state.cart.quantity = state.cart.quantity += 1;
     },
     addPlanToCart(state: MainState, plan: Plan) {
-      if (!state.cart.plan) state.cart.quantity = state.cart.quantity++;
+      if (!state.cart.plan) state.cart.quantity = state.cart.quantity += 1;
       state.cart.plan = plan;
     },
     removeProductInCart(state: MainState, productId: number) {
-      state.cart.quantity = state.cart.quantity--;
+      const productIndex: number = state.cart.products.findIndex(
+        (product) => productId === product.id
+      );
+      state.cart.quantity = state.cart.quantity -=
+        state.cart.products[productIndex].quantidadeSelecionada;
       state.cart.products = state.cart.products.filter((product) => product.id !== productId);
     },
     removePlanInCart(state: MainState) {
-      state.cart.quantity = state.cart.quantity--;
+      state.cart.quantity = state.cart.quantity -= 1;
       state.cart.plan = undefined;
     },
     logout(state) {
