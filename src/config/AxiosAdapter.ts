@@ -11,7 +11,7 @@ export default class AxiosAdapter {
       method: 'post',
       data
     });
-    return response.data.access_token;
+    return response.data;
   }
 
   static async register(url: string, data: any) {

@@ -5,8 +5,7 @@ import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
 export interface AuthState {
-  user: User;
-  authUser: AuthUser;
+  authUser: AuthUser | undefined;
   userRoles: string[];
   tokenJwt: string;
 }
@@ -14,16 +13,12 @@ export interface AuthState {
 const AuthStore = createStore<AuthState>({
   state(): AuthState {
     return {
-      user: {} as User,
       authUser: {} as AuthUser,
       userRoles: [] as string[],
       tokenJwt: ''
     };
   },
   mutations: {
-    setUser(state: AuthState, user: User) {
-      state.user = user;
-    },
     setAuthUser(state: AuthState, authUser: AuthUser) {
       state.authUser = authUser;
     },
@@ -34,15 +29,12 @@ const AuthStore = createStore<AuthState>({
       state.tokenJwt = tokenJwt;
     },
     logout(state) {
-      state.user = new User();
+      state.authUser = undefined;
       state.userRoles = [];
       state.tokenJwt = '';
     }
   },
   getters: {
-    getUser(state: AuthState) {
-      return state.user;
-    }, 
     getAuthUser(state: AuthState) {
       return state.authUser;
     },

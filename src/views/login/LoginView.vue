@@ -62,7 +62,6 @@ import UserServices from '@/services/UserServices';
 import { useStore } from 'vuex';
 import type { AuthState } from '@/config/AuthStore';
 import router from '@/router';
-import { AuthUser } from '@/entity/AuthUser';
 
 const loadingAuth = ref(false);
 const toast = useToast();
@@ -73,14 +72,11 @@ async function Authenticate() {
   try {
     loadingAuth.value = true;
     const response: any = await UserServices.login(auth.value);
-    store.commit('setTokenJwt', response);
-
-    const result: any = await UserServices.getProfile(store);
-    store.commit('setAuthUser', result.authUser);
-    
-    ChoosePath(result.authUser.idCargo);
-    
+    store.commit('setTokenJwt', response.access_token);
+    store.commit('setAuthUser', response.user);
+    ChoosePath(response.user.idCargo);
   } catch (error) {
+    console.log(error)
     toast.error('Email ou senha errados!');
   } finally {
     loadingAuth.value = false;
