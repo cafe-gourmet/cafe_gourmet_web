@@ -28,28 +28,33 @@
           lg="2"
           align-self="center"
         >
-          <item-component :item="item" @click="showProductItemDialog = true" />
+          <item-component :item="item" @click="showProductDialog(item)" />
         </v-col>
       </v-row>
     </v-container>
-    <product-item-dialog :show="showProductItemDialog" @close="showProductItemDialog = false" />
+    <plan-item-dialog
+      :show="showPlanItemDialog"
+      :item="planSelected"
+      @close="closeProductDialog()"
+    />
   </v-container>
 </template>
 
 <script setup lang="ts">
 import HeaderComponent from './../home/components/HeaderComponent.vue';
 import ItemComponent from '../home/components/ItemComponent.vue';
-import ProductItemDialog from '../products/dialogs/ProductItemDialog.vue';
 import { onMounted, ref } from 'vue';
 import type { Plan } from '@/entity/Plan';
 import PlanServices from '@/services/PlanServices';
 import { useStore } from 'vuex';
 import { useToast } from 'vue-toastification';
+import PlanItemDialog from './PlanItemDialog.vue';
 
 const store = useStore();
 const toast = useToast();
-const showProductItemDialog = ref(false);
-const planItems = ref<Plan[]>([])
+const showPlanItemDialog = ref(false);
+const planItems = ref<Plan[]>([]);
+const planSelected = ref<Plan>();
 
 onMounted(async () => await getPlans());
 
@@ -61,6 +66,16 @@ async function getPlans() {
     console.error('Erro ao buscar planos:', error);
     toast.error('Ocorreu um erro ao tentar buscar os planos.');
   }
+}
+
+function showProductDialog(item: any) {
+  planSelected.value = item;
+  showPlanItemDialog.value = true;
+}
+
+function closeProductDialog() {
+  planSelected.value = undefined;
+  showPlanItemDialog.value = false;
 }
 </script>
 
