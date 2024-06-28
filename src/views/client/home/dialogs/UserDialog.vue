@@ -4,9 +4,6 @@
       <v-toolbar color="secondary">
         <v-btn icon="mdi-close" color="primary" @click="$emit('close')"></v-btn>
         <v-toolbar-title class="text-primary text-h5">Seus Dados</v-toolbar-title>
-        <v-toolbar-items>
-          <v-btn icon="mdi-content-save" size="x-large" color="primary" @click="() => {}" />
-        </v-toolbar-items>
       </v-toolbar>
       <div class="text-center px-8">
         <v-row align="center" style="height: 11rem">
