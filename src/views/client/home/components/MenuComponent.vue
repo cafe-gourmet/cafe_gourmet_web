@@ -17,15 +17,8 @@
         <v-col cols="12" class="font-weight-bold"> O que deseja conhecer? </v-col>
       </v-row>
       <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
-      <div class="mt-4 mb-2 cursor-pointer">Nossos Produtos</div>
-      <div class="mb-2 cursor-pointer">Nossos Planos</div>
-      <div class="mb-8 cursor-pointer">Sobre nós</div>
-      <v-row>
-        <v-col cols="12" class="font-weight-bold"> O que deseja encontrar? </v-col>
-      </v-row>
-      <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
-      <div class="mt-4 mb-2 cursor-pointer">Meu Carrinho</div>
-      <div class="mb-8 cursor-pointer">Meus dados</div>
+      <div class="mt-4 mb-2 cursor-pointer" @click="router.push('/client/products')">Nossos Produtos</div>
+      <div class="mb-8 cursor-pointer" @click="router.push('/client/plans')">Nossos Planos</div>
       <v-row>
         <v-col cols="12" class="font-weight-bold"> Quer trocar de conta? </v-col>
       </v-row>

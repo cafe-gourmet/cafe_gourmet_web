@@ -39,7 +39,7 @@
                       <span>{{ product.quantidadeSelecionada }}</span>
                     </div>
                     <div class="mt-2 text-subtitle-1">
-                      <span class="cursor-pointer" @click="showProductItemDialog = true"
+                      <span class="cursor-pointer" @click="showProductDialog(product)"
                         >visualizar</span
                       >
                       <span class="ml-4 cursor-pointer" @click="excludeProduct(product.id)"
@@ -115,11 +115,17 @@
         </v-row>
       </div>
     </v-card>
-    <product-item-dialog :show="showProductItemDialog" @close="showProductItemDialog = false" :cart="true" />
+    <product-item-dialog
+      :show="showProductItemDialog"
+      @close="closeProductDialog"
+      :cart="true"
+      :item="productSelected"
+    />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
+import { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
 import ProductItemDialog from '../../products/dialogs/ProductItemDialog.vue';
 import type { CartStore, MainState } from '@/config/MainStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
@@ -133,10 +139,21 @@ const totalPrice = ref(0);
 const totalPriceMonthly = ref(0);
 const totalPriceYear = ref(0);
 const showProductItemDialog = ref(false);
+const productSelected = ref<ProductResponseDTO>();
 
 onMounted(() => {
   calculateTotal();
 });
+
+function showProductDialog(item: any) {
+  productSelected.value = item;
+  showProductItemDialog.value = true;
+}
+
+function closeProductDialog() {
+  productSelected.value = undefined;
+  showProductItemDialog.value = false;
+}
 
 function excludeProduct(id: number) {
   store.commit('removeProductInCart', id);

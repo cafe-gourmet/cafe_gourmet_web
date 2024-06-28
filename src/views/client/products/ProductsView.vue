@@ -28,14 +28,11 @@
           lg="2"
           align-self="center"
         >
-          <item-component
-            :item="item"
-            @click="showProductItemDialog = true"
-          />
+          <item-component :item="item" @click="showProductDialog(item)" />
         </v-col>
       </v-row>
     </v-container>
-    <product-item-dialog :show="showProductItemDialog" @close="showProductItemDialog = false" />
+    <product-item-dialog :show="showProductItemDialog" :item="productSelected" @close="closeProductDialog()" />
   </v-container>
 </template>
 
@@ -53,6 +50,7 @@ const store = useStore();
 const toast = useToast();
 const showProductItemDialog = ref(false);
 const productItems = ref<ProductResponseDTO[]>([]);
+const productSelected = ref<ProductResponseDTO>();
 
 onMounted(async () => await getProducts());
 
@@ -64,6 +62,16 @@ async function getProducts() {
     console.error('Erro ao buscar produtos:', error);
     toast.error('Ocorreu um erro ao tentar buscar os produtos.');
   }
+}
+
+function showProductDialog(item: any) {
+  productSelected.value = item;
+  showProductItemDialog.value = true;
+}
+
+function closeProductDialog() {
+  productSelected.value = undefined;
+  showProductItemDialog.value = false;
 }
 </script>
 

@@ -30,31 +30,28 @@
       <div class="mt-2 font-weight-bold" style="font-size: 1.2rem">
         {{ props.item?.nome }}
       </div>
-      <div class="mt-1"><strong>Marca:</strong> {{ props.item?.marca }}</div>
-      <div class="mt-1"><strong>Categoria:</strong> {{ props.item.categoria.nome }}</div>
+      <div class="mt-1">
+        <strong>Período: </strong> {{ props.item.idPeriodo === 1 ? 'Mensal' : 'Anual' }}
+      </div>
+      <div class="mt-1">
+        <strong>Descrição:</strong> Produto com alto requinte para paladares diversos, quase um
+        especial de tão saboroso.
+      </div>
       <div class="mt-1 font-weight-bold">Valores:</div>
       <div class="mt-1 font-weight-bold" style="font-size: 1.2rem">
         R$ {{ formatCurrency(props.item.preco) }}
       </div>
       <div class="mt-1 font-weight-bold" style="font-size: 1.2rem">
-        R$
-        {{
-          formatCurrency(
-            props.item.preco - (props.item.preco * props.item.percentualDescontoMensal) / 100
-          )
-        }}
-        no plano mensal
+        R$ {{ formatCurrency(props.item.preco) }} no plano mensal
       </div>
       <div class="mt-1 font-weight-bold" style="font-size: 1.2rem">
-        R$
-        {{
-          formatCurrency(
-            props.item.preco - (props.item.preco * props.item.percentualDescontoAnual) / 100
-          )
-        }}
-        no plano anual
+        R$ {{ formatCurrency(props.item.preco) }} no plano anual
       </div>
-      <v-btn v-if="!props.cart" color="primary" class="my-4" @click="addProductToCart()"
+      <v-btn
+        v-if="!props.cart"
+        color="primary"
+        class="my-4"
+        @click="store.commit('addPlanToCart', props.item)"
         >Adicionar ao Carrinho</v-btn
       >
     </v-card>
@@ -77,18 +74,14 @@ onMounted(() => getImages());
 
 function getImages() {
   carouselImages.value = [
-    props.item?.imgProduto1 || genericImage,
-    props.item?.imgProduto2 || genericImage,
-    props.item?.imgProduto3 || genericImage
+    props.item?.imgPlano1 || genericImage,
+    props.item?.imgPlano2 || genericImage,
+    props.item?.imgPlano3 || genericImage
   ];
 }
 
 function close() {
   emit('close');
-}
-
-function addProductToCart() {
-  store.commit('addProductToCart', props.item);
 }
 </script>
 
