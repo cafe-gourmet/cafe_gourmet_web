@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 
 const props = defineProps(['show', 'cart', 'item']);
@@ -76,12 +76,22 @@ const emit = defineEmits(['close']);
 onMounted(() => getImages());
 
 function getImages() {
+  console.log(props.item?.imgProduto1, props.item);
   carouselImages.value = [
     props.item?.imgProduto1 || genericImage,
     props.item?.imgProduto2 || genericImage,
     props.item?.imgProduto3 || genericImage
   ];
 }
+
+watch(
+  () => props.item,
+  (newValue) => {
+    if (newValue) {
+      getImages();
+    }
+  }
+);
 
 function close() {
   emit('close');
