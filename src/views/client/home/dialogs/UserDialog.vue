@@ -12,7 +12,7 @@
         <v-row align="center" style="height: 11rem">
           <v-col cols="12">
             <v-badge
-              v-if="!selectedImage"
+              v-if="!userAuth.fotoPerfil"
               color="secondary"
               @click="openFileSelector"
               class="cursor-pointer mt-5"
@@ -41,14 +41,14 @@
                 class="cursor-pointer"
                 style="border: 4px solid #5a2e2e"
               >
-                <v-img v-if="selectedImage" :src="selectedImage"></v-img>
+                <v-img v-if="userAuth.fotoPerfil" :src="userAuth.fotoPerfil"></v-img>
               </v-avatar>
               <v-btn
                 class="mt-2"
                 color="primary"
                 size="small"
                 append-icon="mdi-delete"
-                @click="selectedImage = null"
+                @click="userAuth.fotoPerfil = null"
                 >excluir imagem</v-btn
               >
             </div>
@@ -63,10 +63,10 @@
           </v-col>
         </v-row>
         <v-row style="height: 5rem">
-          <v-img v-if="selectedImage" :src="selectedImage" contain></v-img>
+          <v-img v-if="userAuth.fotoPerfil" :src="userAuth.fotoPerfil" contain></v-img>
           <v-col cols="12">
             <v-text-field
-              v-model="user.nomeCompleto"
+              v-model="userAuth.nomeCompleto"
               label="Nome"
               variant="outlined"
               dense
@@ -75,13 +75,13 @@
         </v-row>
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
-            <v-text-field v-model="user.cpf" label="CPF" variant="outlined"></v-text-field>
+            <v-text-field v-model="userAuth.cliente!.cpf" label="CPF" variant="outlined"></v-text-field>
           </v-col>
         </v-row>
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.email"
+              v-model="userAuth.email"
               class="text-left"
               type="email"
               label="Email"
@@ -92,7 +92,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.telefone"
+              v-model="userAuth.cliente!.telefone"
               label="Telefone"
               variant="outlined"
             ></v-text-field>
@@ -101,7 +101,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.endereco.cep"
+              v-model="userAuth.cliente!.endereco.cep"
               append-inner-icon="mdi-magnify"
               :loading="loadingFindCep"
               label="CEP"
@@ -113,7 +113,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.endereco.estado"
+              v-model="userAuth.cliente!.endereco.estado"
               :disabled="true"
               label="Estado"
               variant="outlined"
@@ -123,7 +123,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.endereco.cidade"
+              v-model="userAuth.cliente!.endereco.cidade"
               :disabled="true"
               label="Cidade"
               variant="outlined"
@@ -133,7 +133,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.endereco.bairro"
+              v-model="userAuth.cliente!.endereco.bairro"
               :disabled="true"
               label="Bairro"
               variant="outlined"
@@ -143,7 +143,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.endereco.rua"
+              v-model="userAuth.cliente!.endereco.rua"
               :disabled="true"
               label="Rua"
               variant="outlined"
@@ -153,7 +153,7 @@
         <v-row align="center" style="height: 5rem">
           <v-col cols="12">
             <v-text-field
-              v-model="user.endereco.numero"
+              v-model="userAuth.cliente!.endereco.numero"
               label="Número"
               variant="outlined"
             ></v-text-field>
@@ -166,6 +166,7 @@
               <v-text-field
                 v-model="changePassword.password"
                 label="Senha Atual"
+                type="password"
                 variant="outlined"
               ></v-text-field>
             </v-col>
@@ -175,6 +176,7 @@
               <v-text-field
                 v-model="changePassword.newPassword"
                 label="Nova Senha"
+                type="password"
                 variant="outlined"
               ></v-text-field>
             </v-col>
@@ -184,6 +186,7 @@
               <v-text-field
                 v-model="changePassword.newPasswordRepeated"
                 label="Repita sua senha"
+                type="password"
                 variant="outlined"
               ></v-text-field>
             </v-col>
@@ -217,14 +220,18 @@ import type { UserAddress } from '@/entity/User';
 import { User } from '@/entity/User';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
+import { AuthUser } from '@/entity/AuthUser';
+import { useStore } from 'vuex';
 
 const props = defineProps(['show']);
 const user = ref(new User());
+var userAuth = ref(new AuthUser());
 const changePassword = ref({ password: '', newPassword: '', newPasswordRepeated: '' });
 const toast = useToast();
 const loadingFindCep = ref(false);
-const selectedImage = ref<string | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
+const store = useStore();
+userAuth.value = store.getters.getAuthUser;
 
 function openFileSelector() {
   fileInput.value!.click();
@@ -239,20 +246,21 @@ function onFileChange(event: Event) {
 
     reader.onload = () => {
       if (reader.result) {
-        selectedImage.value = reader.result.toString();
+        userAuth.value.fotoPerfil =  reader.result.toString();
       }
     };
     reader.readAsDataURL(file);
   } else {
     toast.error('Selecione um arquivo de imagem.');
   }
+
 }
 
 async function findAddressByCep() {
   try {
     loadingFindCep.value = true;
     const addressResponse = await ExternalServices.getAddressByCep(user.value.endereco.cep);
-    user.value.endereco.fillByApiCepResponse(addressResponse);
+    userAuth.value.cliente!.endereco.fillByApiCepResponse(addressResponse);
   } catch (error) {
     console.error(error);
   } finally {
