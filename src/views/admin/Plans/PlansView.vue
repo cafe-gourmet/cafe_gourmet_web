@@ -86,7 +86,7 @@ import DeletePlanDialog from './dialogs/DeletePlanDialog.vue';
 import HeaderComponent from '../home/components/HeaderComponent.vue';
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import type { AuthState } from '@/config/AuthStore';
+import type { MainState } from '@/config/MainStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
 import { useToast } from 'vue-toastification';
 import type { Plan } from '@/entity/Plan';
@@ -98,7 +98,7 @@ const showDeletePlantDialog = ref(false);
 const planSelected = ref(undefined);
 const plans = ref<Plan[]>([]);
 const toast = useToast();
-const store = useStore<AuthState>();
+const store = useStore<MainState>();
 
 onMounted(async () => await getPlans());
 

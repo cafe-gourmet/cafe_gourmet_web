@@ -60,13 +60,13 @@ import { useToast } from 'vue-toastification';
 import { Auth } from '@/entity/Auth';
 import UserServices from '@/services/UserServices';
 import { useStore } from 'vuex';
-import type { AuthState } from '@/config/AuthStore';
+import type { MainState } from '@/config/MainStore';
 import router from '@/router';
 
 const loadingAuth = ref(false);
 const toast = useToast();
 const auth = ref(new Auth());
-const store = useStore<AuthState>();
+const store = useStore<MainState>();
 
 async function Authenticate() {
   try {

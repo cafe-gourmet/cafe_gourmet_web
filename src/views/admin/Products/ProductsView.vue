@@ -87,7 +87,7 @@ import HeaderComponent from '../home/components/HeaderComponent.vue';
 import { onMounted, ref } from 'vue';
 import ProductServices from '@/services/ProductServices';
 import { useStore } from 'vuex';
-import type { AuthState } from '@/config/AuthStore';
+import type { MainState } from '@/config/MainStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
 import type { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
 import { useToast } from 'vue-toastification';
@@ -98,7 +98,7 @@ const showDeleteProductDialog = ref(false);
 const productSelected = ref(undefined);
 const products = ref<ProductResponseDTO[]>([]);
 const toast = useToast();
-const store = useStore<AuthState>();
+const store = useStore<MainState>();
 
 onMounted(async () => await getProducts());
 

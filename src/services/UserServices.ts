@@ -1,4 +1,4 @@
-import type { AuthState } from '@/config/AuthStore';
+import type { MainState } from '@/config/MainStore';
 import AxiosAdapter from '@/config/AxiosAdapter';
 import type { Auth } from '@/entity/Auth';
 import type { User } from '@/entity/User';
@@ -14,7 +14,7 @@ export default class UserServices {
     return await AxiosAdapter.auth('autenticacao/login', auth);
   }
 
-  static logout(store: Store<AuthState>): void {
+  static logout(store: Store<MainState>): void {
     store.dispatch('logout');
   }
 }

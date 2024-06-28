@@ -22,14 +22,14 @@
 </template>
 
 <script setup lang="ts">
-import type { AuthState } from '@/config/AuthStore';
+import type { MainState } from '@/config/MainStore';
 import PlanServices from '@/services/PlanServices';
 import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
 
 const props = defineProps(['show', 'plan']);
 const toast = useToast();
-const store = useStore<AuthState>();
+const store = useStore<MainState>();
 
 async function deletePlan() {
   try {

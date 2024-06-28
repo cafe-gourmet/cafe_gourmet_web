@@ -1,6 +1,6 @@
 import axios from 'axios';
-import AuthStore, { type AuthState } from './AuthStore';
 import type { Store } from 'vuex';
+import { type MainState } from './MainStore';
 
 export default class AxiosAdapter {
   private static readonly baseUrl = 'http://localhost:3000/';
@@ -23,7 +23,7 @@ export default class AxiosAdapter {
     return response.data;
   }
 
-  static async get(url: string, store: Store<AuthState>, params?: any) {
+  static async get(url: string, store: Store<MainState>, params?: any) {
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'get',
@@ -33,7 +33,7 @@ export default class AxiosAdapter {
     return response.data;
   }
 
-  static async post(url: string, store: Store<AuthState>, data?: any) {
+  static async post(url: string, store: Store<MainState>, data?: any) {
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'post',
@@ -43,7 +43,7 @@ export default class AxiosAdapter {
     return response.data;
   }
 
-  static async put(url: string, store: Store<AuthState>, data?: any) {
+  static async put(url: string, store: Store<MainState>, data?: any) {
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'put',
@@ -53,7 +53,7 @@ export default class AxiosAdapter {
     return response.data;
   }
 
-  static async delete(url: string, store: Store<AuthState>, params?: any) {
+  static async delete(url: string, store: Store<MainState>, params?: any) {
     const response = await axios({
       url: `${this.baseUrl}${url}`,
       method: 'delete',
@@ -63,7 +63,7 @@ export default class AxiosAdapter {
     return response.data;
   }
 
-  private static getHeaders(store: Store<AuthState>) {
+  private static getHeaders(store: Store<MainState>) {
     return {
       Authorization: `Bearer ${store.getters.getTokenJwt}`,
       roles: undefined

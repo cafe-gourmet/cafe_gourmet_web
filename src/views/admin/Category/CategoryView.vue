@@ -74,7 +74,7 @@ import DeleteCategoryDialog from './dialogs/DeleteCategoryDialog.vue';
 import HeaderComponent from '../home/components/HeaderComponent.vue';
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import type { AuthState } from '@/config/AuthStore';
+import type { MainState } from '@/config/MainStore';
 import type { Category } from '@/entity/Category';
 import CategoryServices from '@/services/CategoryServices';
 import { useToast } from 'vue-toastification';
@@ -84,8 +84,8 @@ const showAddCategoryDialog = ref(false);
 const showDeleteCategoryDialog = ref(false);
 const categorySelected = ref(undefined);
 const categories = ref<Category[]>([]);
-const toast = useToast()
-const store = useStore<AuthState>();
+const toast = useToast();
+const store = useStore<MainState>();
 
 onMounted(async () => await getCategories());
 
@@ -95,7 +95,7 @@ async function getCategories() {
     categories.value = response ? response : [];
   } catch (error) {
     console.error('Erro ao buscar categorias:', error);
-    toast.error('Ocorreu um erro ao tentar buscar as categorias.')
+    toast.error('Ocorreu um erro ao tentar buscar as categorias.');
   }
 }
 
