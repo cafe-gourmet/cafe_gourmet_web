@@ -76,7 +76,6 @@ const emit = defineEmits(['close']);
 onMounted(() => getImages());
 
 function getImages() {
-  console.log(props.item?.imgProduto1, props.item);
   carouselImages.value = [
     props.item?.imgProduto1 || genericImage,
     props.item?.imgProduto2 || genericImage,
