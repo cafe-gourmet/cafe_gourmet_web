@@ -47,7 +47,7 @@ export class AuthUser {
   nomeCompleto: string;
   email: string;
   senha: string;
-  fotoPerfil?: string | null;
+  fotoPerfil: string | null;
   idCargo: number;
   cargo: AuthUserRole;
   idSituacao: number;
