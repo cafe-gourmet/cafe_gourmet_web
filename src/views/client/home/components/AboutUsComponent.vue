@@ -1,8 +1,10 @@
 <template>
     <v-container fluid class="container" >
       <header-component />
-      <div style="margin-top: 100px">
-        <h1>Sobre Nós</h1>
+      
+      <v-img :src="rimaLogo" width="500" style="margin-top: 100px"/>
+      <div>
+        <h1 class="text-center">Sobre Nós</h1>
         <br/>
         {{ aboutUs?.descricao }}
       </div>
@@ -15,6 +17,7 @@
   import type { AboutUs } from '@/entity/AboutUs';
   import AboutUsServices from '@/services/AboutUsServices';
   import { onMounted, ref } from 'vue';
+  import rimaLogo from '../../../../img/sobre-nos.jpeg';
   import { useStore } from 'vuex';
   onMounted(async () => await getDescription());
   const store = useStore();
