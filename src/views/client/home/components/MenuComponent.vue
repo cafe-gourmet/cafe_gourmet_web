@@ -18,6 +18,7 @@
       </v-row>
       <v-divider color="secondary" :thickness="2" class="border-opacity-50 mt-2" />
       <div class="mt-4 mb-2 cursor-pointer" @click="router.push('/client/products')">Nossos Produtos</div>
+      <div class="mb-2 cursor-pointer" @click="router.push('/client/about-us')">Sobre Nós</div>
       <div class="mb-8 cursor-pointer" @click="router.push('/client/plans')">Nossos Planos</div>
       <v-row>
         <v-col cols="12" class="font-weight-bold"> Quer trocar de conta? </v-col>

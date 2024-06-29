@@ -1,0 +1,43 @@
+<template>
+    <v-container fluid class="container" >
+      <header-component />
+      <div style="margin-top: 100px">
+        <h1>Sobre Nós</h1>
+        <br/>
+        {{ aboutUs?.descricao }}
+      </div>
+    </v-container>
+  </template>
+  
+  <script setup lang="ts">
+  
+  import HeaderComponent from './HeaderComponent.vue';
+  import type { AboutUs } from '@/entity/AboutUs';
+  import AboutUsServices from '@/services/AboutUsServices';
+  import { onMounted, ref } from 'vue';
+  import { useStore } from 'vuex';
+  onMounted(async () => await getDescription());
+  const store = useStore();
+  const aboutUs = ref<AboutUs>();
+  
+  async function getDescription() {
+    
+    try {
+      const response = await AboutUsServices.getAll(store);
+      aboutUs.value =  response[0];
+      console.log(response);
+    } catch (error) {
+      console.error('Erro ao buscar o texto:', error);
+    }
+  }
+  </script> 
+  
+  <style scoped>
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  </style>
+  
