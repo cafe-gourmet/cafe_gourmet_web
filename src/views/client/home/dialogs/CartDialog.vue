@@ -28,7 +28,12 @@
                 <v-row>
                   <v-col cols="12" sm="12" md="4" lg="4">
                     <v-img
-                      src="https://cdn.irmaospatrocinio.com.br/img/p/1/7/4/1/6/0/174160-large_default.jpg"
+                      :src="
+                        product.imgProduto1 ||
+                        product.imgProduto2 ||
+                        product.imgProduto3 ||
+                        genericImage
+                      "
                       style="border: 2px solid #5a2e2e; border-radius: 5px; width: 200px"
                     />
                   </v-col>
@@ -65,7 +70,12 @@
               <v-row>
                 <v-col cols="12" sm="12" md="4" lg="4">
                   <v-img
-                    src="https://cdn.irmaospatrocinio.com.br/img/p/1/7/4/1/6/0/174160-large_default.jpg"
+                    :src="
+                      cart.plan.imgPlano1 ||
+                      cart.plan.imgPlano2 ||
+                      cart.plan.imgPlano3 ||
+                      genericImage
+                    "
                     style="border: 2px solid #5a2e2e; border-radius: 5px; width: 200px"
                   />
                 </v-col>
@@ -140,6 +150,8 @@ const totalPriceMonthly = ref(0);
 const totalPriceYear = ref(0);
 const showProductItemDialog = ref(false);
 const productSelected = ref<ProductResponseDTO>();
+const genericImage =
+  'https://s.tmimgcdn.com/scr/800x500/273800/modelo-de-logotipo-de-cafeteria-ilustracao-vetorial-v3_273846-original.jpg';
 
 onMounted(() => {
   calculateTotal();

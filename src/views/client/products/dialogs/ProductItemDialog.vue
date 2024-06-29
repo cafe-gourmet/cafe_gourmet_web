@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 
 const props = defineProps(['show', 'cart', 'item']);
@@ -82,6 +82,15 @@ function getImages() {
     props.item?.imgProduto3 || genericImage
   ];
 }
+
+watch(
+  () => props.item,
+  (newValue) => {
+    if (newValue) {
+      getImages();
+    }
+  }
+);
 
 function close() {
   emit('close');
