@@ -93,6 +93,12 @@ const MainStore = createStore<MainState>({
     },
     getCartQuantity(state: MainState) {
       return state.cart.quantity;
+    },
+    isAdmin(state: MainState) {
+      return state.authUser?.idCargo === 3;
+    },
+    isClient(state: MainState) {
+      return state.authUser?.idCargo === 2;
     }
   },
   actions: {

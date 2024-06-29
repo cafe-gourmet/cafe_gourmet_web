@@ -8,6 +8,7 @@ import ProductsAdminView from '@/views/admin/Products/ProductsView.vue';
 import CategoryView from '@/views/admin/Category/CategoryView.vue';
 import PlansAdminView from '@/views/admin/Plans/PlansView.vue';
 import PlansView from '@/views/client/plans/PlansView.vue';
+import MainStore from '@/config/MainStore';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,13 @@ const router = createRouter({
     {
       path: '/client',
       name: 'client',
+      beforeEnter: (to, from, next) => {
+        if (!MainStore.getters.isClient) {
+          next({ name: 'login' });
+        } else {
+          next();
+        }
+      },
       children: [
         {
           path: '',
@@ -46,6 +54,13 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin',
+      beforeEnter: (to, from, next) => {
+        if (!MainStore.getters.isAdmin) {
+          next({ name: 'login' });
+        } else {
+          next();
+        }
+      },
       children: [
         {
           path: '',
