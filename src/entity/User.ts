@@ -1,5 +1,4 @@
 import type { GetAddressByCepResponse } from '../types/responses/GetAddressByCepResponse';
-import type { AuthUser } from './AuthUser';
 
 export class UserAddress {
   cep: string;
@@ -28,7 +27,7 @@ export class UserAddress {
 }
 
 export class User {
-  id?: number |null;
+  id?: number | null;
   nomeCompleto: string;
   email: string;
   cpf: string;

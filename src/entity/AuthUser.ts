@@ -1,4 +1,4 @@
-import type { GetAddressByCepResponse } from "@/types/responses/GetAddressByCepResponse";
+import type { GetAddressByCepResponse } from '@/types/responses/GetAddressByCepResponse';
 
 export class AuthUserRole {
   id: number;
@@ -11,7 +11,7 @@ export class AuthUserAdress {
   cidade: string;
   bairro: string;
   rua: string;
-  numero: string; 
+  numero: string;
 
   constructor() {
     this.cep = '';
@@ -30,16 +30,17 @@ export class AuthUserAdress {
     this.rua = response.logradouro;
   }
 }
-export class AuthUserClient{
-  id:number;
+export class AuthUserClient {
+  id: number;
   cpf: string;
-  telefone: string
-  planoId?: number;
+  telefone: string;
+  planoId?: number | null;
   idUsuario: number;
   endereco: AuthUserAdress;
   constructor() {
     this.cpf = '';
     this.telefone = '';
+    this.endereco = new AuthUserAdress();
   }
 }
 export class AuthUser {
@@ -52,11 +53,12 @@ export class AuthUser {
   cargo: AuthUserRole;
   idSituacao: number;
   idCliente?: number | null;
-  cliente?: AuthUserClient | null;
+  cliente: AuthUserClient;
   constructor() {
     this.nomeCompleto = '';
     this.email = '';
     this.senha = '';
     this.fotoPerfil = '';
+    this.cliente = new AuthUserClient();
   }
 }

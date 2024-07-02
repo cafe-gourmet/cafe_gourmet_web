@@ -76,6 +76,11 @@ const MainStore = createStore<MainState>({
       state.authUser = undefined;
       state.userRoles = [];
       state.tokenJwt = '';
+      state.cart = {
+        products: [] as ProductResponseDTO[],
+        plan: undefined,
+        quantity: 0
+      };
     }
   },
   getters: {
