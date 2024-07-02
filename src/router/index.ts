@@ -6,6 +6,7 @@ import HomeAdminView from '@/views/admin/home/HomeView.vue';
 import ProductsView from '@/views/client/products/ProductsView.vue';
 import ProductsAdminView from '@/views/admin/Products/ProductsView.vue';
 import CategoryView from '@/views/admin/Category/CategoryView.vue';
+import ReportsView from '@/views/admin/Reports/ReportsView.vue';
 import PlansAdminView from '@/views/admin/Plans/PlansView.vue';
 import PlansView from '@/views/client/plans/PlansView.vue';
 import AboutUsComponent from '@/views/client/home/components/AboutUsComponent.vue';
@@ -87,6 +88,11 @@ const router = createRouter({
           path: 'categories',
           name: 'admin.categories',
           component: CategoryView
+        },
+        {
+          path: 'reports',
+          name: 'admin.reports',
+          component: ReportsView
         }
       ]
     }
