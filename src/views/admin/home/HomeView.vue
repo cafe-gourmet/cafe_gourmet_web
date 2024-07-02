@@ -52,7 +52,7 @@ const cardOptions = [
   {
     icon: 'mdi-file-chart-outline',
     text: 'Relatórios',
-    redirect: '/admin/users'
+    redirect: '/admin/reports'
   },
   {
     icon: 'mdi-contacts-outline',

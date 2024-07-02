@@ -16,6 +16,8 @@
     "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "@mdi/font": "^7.4.47",
     "axios": "^1.6.8",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "vite-plugin-vuetify": "^2.0.3",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
