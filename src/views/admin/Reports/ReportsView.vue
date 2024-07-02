@@ -30,10 +30,6 @@ async function gerarRelatorioProdutos () {
     const response = await ProductServices.getAll(store);
     products.value = response ? response : [];
 
-    const doc = new jsPDF('l', 'mm', 'a4'); 
-
-    doc.text("Relatório de Produtos",doc.internal.pageSize.width / 2, 15,{ align: 'center' })
-  
     const head = [['Produto', 'Marca', 'Preco','Cód. Barras','Categoria','Qnt','Desc. Mensal','Desc. Anual']]
 
     products.value.forEach((product) => {
@@ -48,14 +44,8 @@ async function gerarRelatorioProdutos () {
         product.percentualDescontoAnual    
       ]);
     });
-
-    autoTable(doc, {
-        head: head,
-        body: data,
-        startY: 25
-    });
-
-    doc.save('produtos.pdf');
+    
+    gerarPDF("Relatório de Produtos",head, data);
   } catch(error){
     console.error('Erro ao gerar o relatório de produtos:', error);
     toast.error('Erro ao gerar o relatório de produtos.');
@@ -69,9 +59,6 @@ async function gerarRelatorioPlanos() {
     const response = await PlanServices.getAll(store);
     plans.value = response ? response : [];
 
-    const doc = new jsPDF('l', 'mm', 'a4'); 
-
-    doc.text("Relatório de Planos",doc.internal.pageSize.width / 2, 15,{ align: 'center' })
   
     const head = [['Plano','Preco','Descrição','Situação','Período']]
 
@@ -85,17 +72,25 @@ async function gerarRelatorioPlanos() {
       ]);
     });
 
-    autoTable(doc, {
-        head: head,
-        body: data,
-        startY: 25
-    });
+    gerarPDF("Relatório de Planos",head, data);
 
-    doc.save('planos.pdf');
   } catch(error){
     console.error('Erro ao gerar o relatório de planos:', error);
     toast.error('Erro ao gerar o relatório de planos.');
   }
+}
+function gerarPDF(nomeRel:string,head: string[][],data:any[]) {
+  const doc = new jsPDF('l', 'mm', 'a4'); 
+  
+  doc.text(nomeRel,doc.internal.pageSize.width / 2, 15,{ align: 'center' })
+
+  autoTable(doc, {
+    head: head,
+    body: data,
+    startY: 25
+  });
+
+  doc.save(`${nomeRel}.pdf`);
 }
 </script>
 
