@@ -96,7 +96,7 @@ async function gerarRelatorioVendas() {
       data.push([
         cart.cliente.usuario.nomeCompleto,       
         cart.produto ? cart.produto!.nome : "-",        
-        cart.produto ? cart.produto!.quantidade : "1",        
+        cart.qntProduto ?? "1",        
         cart.plano ? cart.plano!.nome : "-",     
         cart.statusCompra && !cart.statusCarrinho? "Aprovada" : (!cart.statusCompra && !cart.statusCarrinho ? "Cancelada" : "Aguardando Aprovação")    
       ]);

@@ -27,7 +27,8 @@
       <div class="mt-4 mb-2 cursor-pointer" @click="router.push('/admin/products')">Produtos</div>
       <div class="mb-2 cursor-pointer" @click="router.push('/admin/plans')">Planos</div>
       <div class="mb-2 cursor-pointer" @click="router.push('/admin/users')">Usuários</div>
-      <div class="mb-8 cursor-pointer" @click="router.push('/admin/categories')">Categorias</div>
+      <div class="mb-2 cursor-pointer" @click="router.push('/admin/categories')">Categorias</div>
+      <div class="mb-8 cursor-pointer" @click="router.push('/admin/reports')">Relatórios</div>
 
       <v-row>
         <v-col cols="12" class="font-weight-bold"> Conta </v-col>
