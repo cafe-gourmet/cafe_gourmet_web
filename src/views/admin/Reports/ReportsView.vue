@@ -3,9 +3,10 @@
     <header-component />
     
     <v-btn @click="gerarRelatorioProdutos()">Relatório de Produtos</v-btn>
-    <br/>
-    <br/>
+    <br/><br/>
     <v-btn @click="gerarRelatorioPlanos()">Relatório de Planos</v-btn>
+    <br/><br/>
+    <v-btn @click="gerarRelatorioVendas()">Relatório de Vendas</v-btn>
   </v-container>
 </template>
 
@@ -20,6 +21,8 @@ import { ref } from "vue";
 import { useToast } from "vue-toastification";
 import type { Plan } from "@/entity/Plan";
 import PlanServices from "@/services/PlanServices";
+import type { Cart } from "@/entity/Cart";
+import CartServices from "@/services/CartServices";
 const store = useStore(); 
 const toast = useToast();
     
@@ -77,6 +80,33 @@ async function gerarRelatorioPlanos() {
   } catch(error){
     console.error('Erro ao gerar o relatório de planos:', error);
     toast.error('Erro ao gerar o relatório de planos.');
+  }
+}
+async function gerarRelatorioVendas() {
+  try {
+    const carts = ref<Cart[]>([]);
+    const data: any[] = [];
+    const response = await CartServices.getAll(store);
+    carts.value = response ? response : [];
+
+  
+    const head = [['Nome do Cliente','Produto','Quantidade','Plano','Status da Compra']]
+
+    carts.value.forEach((cart) => {
+      data.push([
+        cart.cliente.usuario.nomeCompleto,       
+        cart.produto ? cart.produto!.nome : "-",        
+        cart.produto ? cart.produto!.quantidade : "1",        
+        cart.plano ? cart.plano!.nome : "-",     
+        cart.statusCompra && !cart.statusCarrinho? "Aprovada" : (!cart.statusCompra && !cart.statusCarrinho ? "Cancelada" : "Aguardando Aprovação")    
+      ]);
+    });
+
+    gerarPDF("Relatório de Vendas",head, data);
+
+  } catch(error){
+    console.error('Erro ao gerar o relatório de vendas:', error);
+    toast.error('Erro ao gerar o relatório de vendas.');
   }
 }
 function gerarPDF(nomeRel:string,head: string[][],data:any[]) {

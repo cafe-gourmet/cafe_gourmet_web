@@ -100,7 +100,7 @@ const MainStore = createStore<MainState>({
       return state.cart.quantity;
     },
     isAdmin(state: MainState) {
-      return state.authUser?.idCargo === 3;
+      return state.authUser?.idCargo === 1;
     },
     isClient(state: MainState) {
       return state.authUser?.idCargo === 2;
