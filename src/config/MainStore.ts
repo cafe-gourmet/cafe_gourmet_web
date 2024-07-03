@@ -2,6 +2,7 @@ import type { AuthUser } from '@/entity/AuthUser';
 import type { Plan } from '@/entity/Plan';
 import router from '@/router';
 import type { ProductResponseDTO } from '@/types/responses/admin/ProductResponseDTO';
+import { useToast } from 'vue-toastification';
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
@@ -46,15 +47,26 @@ const MainStore = createStore<MainState>({
         (product) => newProduct.id === product.id
       );
 
-      if (productIndex !== -1) {
-        state.cart.products[productIndex].quantidadeSelecionada = state.cart.products[
-          productIndex
-        ].quantidadeSelecionada += 1;
+      if (newProduct.quantidade > 0) {
+        if (productIndex !== -1) {
+          if (
+            state.cart.products[productIndex].quantidadeSelecionada <
+            state.cart.products[productIndex].quantidade
+          ) {
+            state.cart.products[productIndex].quantidadeSelecionada = state.cart.products[
+              productIndex
+            ].quantidadeSelecionada += 1;
+          } else {
+            useToast().error('Não há mais produtos disponíveis no estoque.');
+          }
+        } else {
+          state.cart.products.push(newProduct);
+          newProduct.quantidadeSelecionada = 1;
+        }
+        state.cart.quantity = state.cart.quantity += 1;
       } else {
-        state.cart.products.push(newProduct);
-        newProduct.quantidadeSelecionada = 1;
+        useToast().error('Não há mais produtos disponíveis no estoque.');
       }
-      state.cart.quantity = state.cart.quantity += 1;
     },
     addPlanToCart(state: MainState, plan: Plan) {
       if (!state.cart.plan) state.cart.quantity = state.cart.quantity += 1;

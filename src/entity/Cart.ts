@@ -22,4 +22,3 @@ planoId?: number;
 idUsuario: number;
 usuario: User;
 }
-  
