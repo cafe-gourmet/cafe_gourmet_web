@@ -84,6 +84,13 @@ const MainStore = createStore<MainState>({
       state.cart.quantity = state.cart.quantity -= 1;
       state.cart.plan = undefined;
     },
+    clearCart(state: MainState) {
+      state.cart = {
+        products: [] as ProductResponseDTO[],
+        plan: undefined,
+        quantity: 0
+      };
+    },
     logout(state) {
       state.authUser = undefined;
       state.userRoles = [];

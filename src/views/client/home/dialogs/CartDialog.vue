@@ -115,7 +115,14 @@
 
         <v-row align="center" class="mt-10 mb-8">
           <v-col cols="12">
-            <v-btn width="100%" large color="secondary text-primary" class="mb-4 text-h6">
+            <v-btn
+              width="100%"
+              large
+              color="secondary text-primary"
+              class="mb-4 text-h6"
+              :disable="!canPay()"
+              @click="confirmPayment()"
+            >
               Realizar Pagamento
             </v-btn>
             <v-btn width="100%" large color="secondary" variant="outlined" @click="$emit('close')">
@@ -141,6 +148,9 @@ import type { CartStore, MainState } from '@/config/MainStore';
 import { formatCurrency } from '@brazilian-utils/brazilian-utils';
 import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import CartServices from '@/services/CartServices';
+import { useToast } from 'vue-toastification';
+import router from '@/router';
 
 const props = defineProps(['show']);
 const store = useStore<MainState>();
@@ -152,6 +162,8 @@ const showProductItemDialog = ref(false);
 const productSelected = ref<ProductResponseDTO>();
 const genericImage =
   'https://s.tmimgcdn.com/scr/800x500/273800/modelo-de-logotipo-de-cafeteria-ilustracao-vetorial-v3_273846-original.jpg';
+const loadingPayment = ref(false);
+const toast = useToast();
 
 onMounted(() => {
   calculateTotal();
@@ -242,6 +254,22 @@ function calculateTotalYear() {
 
   total += cart.value.plan ? cart.value.plan.preco : 0;
   totalPriceYear.value = total;
+}
+
+function canPay() {
+  return cart.value.products.length > 0 || cart.value.plan?.id;
+}
+
+async function confirmPayment() {
+  try {
+    loadingPayment.value = true;
+    await CartServices.createCart(store);
+    store.commit('clearCart');
+    router.push('/client/shopping');
+  } catch (error) {
+    console.log(error);
+    toast.error('Ocorreu um erro ao confirmar a compra. Tente novamente mais tarde.');
+  }
 }
 </script>
 
