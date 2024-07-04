@@ -13,6 +13,8 @@ import MainStore from '@/config/MainStore';
 import ProductsAdminView from '@/views/admin/Products/ProductsView.vue';
 import UsersView from '@/views/admin/Users/UsersView.vue';
 import ShoppingView from '@/views/client/shopping/ShoppingView.vue';
+import ShoppingAdminView from '@/views/admin/Shopping/ShoppingView.vue';
+import AboutUsView from '@/views/admin/AboutUs/AboutUsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -105,6 +107,16 @@ const router = createRouter({
           path: 'reports',
           name: 'admin.reports',
           component: ReportsView
+        },
+        {
+          path: 'shoppings',
+          name: 'admin.shoppings',
+          component: ShoppingAdminView
+        },
+        {
+          path: 'about-us',
+          name: 'admin.about-us',
+          component: AboutUsView
         }
       ]
     }

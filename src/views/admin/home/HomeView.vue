@@ -35,9 +35,9 @@ const cardOptions = [
     redirect: '/admin/categories'
   },
   {
-    icon: 'mdi-briefcase-account-outline',
-    text: 'Cargos',
-    redirect: '/admin/users'
+    icon: 'mdi-cart-outline',
+    text: 'Compras',
+    redirect: '/admin/shoppings'
   },
   {
     icon: 'mdi-coffee-outline',
@@ -57,12 +57,12 @@ const cardOptions = [
   {
     icon: 'mdi-contacts-outline',
     text: 'Contato',
-    redirect: '/admin/users'
+    redirect: '/admin/contact'
   },
   {
     icon: 'mdi-account-group-outline',
     text: 'Sobre Nós',
-    redirect: '/admin/users'
+    redirect: '/admin/about-us'
   }
 ];
 </script>
