@@ -28,8 +28,10 @@
       <div class="mb-2 cursor-pointer" @click="router.push('/admin/plans')">Planos</div>
       <div class="mb-2 cursor-pointer" @click="router.push('/admin/users')">Usuários</div>
       <div class="mb-2 cursor-pointer" @click="router.push('/admin/categories')">Categorias</div>
-      <div class="mb-8 cursor-pointer" @click="router.push('/admin/reports')">Relatórios</div>
-
+      <div class="mb-2 cursor-pointer" @click="router.push('/admin/shoppings')">Compras</div>
+      <div class="mb-2 cursor-pointer" @click="router.push('/admin/reports')">Relatórios</div>
+      <div class="mb-2 cursor-pointer" @click="router.push('/admin/contact')">Contato</div>
+      <div class="mb-8 cursor-pointer" @click="router.push('/admin/about-us')">Sobre Nós</div>
       <v-row>
         <v-col cols="12" class="font-weight-bold"> Conta </v-col>
       </v-row>
