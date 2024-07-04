@@ -35,9 +35,9 @@ const cardOptions = [
     redirect: '/admin/categories'
   },
   {
-    icon: 'mdi-briefcase-account-outline',
-    text: 'Cargos',
-    redirect: '/admin/users'
+    icon: 'mdi-cart-outline',
+    text: 'Compras',
+    redirect: '/admin/shoppings'
   },
   {
     icon: 'mdi-coffee-outline',

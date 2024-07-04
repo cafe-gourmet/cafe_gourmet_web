@@ -22,6 +22,14 @@ export default class CartServices {
     return await AxiosAdapter.post(this.baseUrl + 'adicionar', store, cartRequest);
   }
 
+  static async cancelShopping(cartId: number, store: Store<MainState>) {
+    return await AxiosAdapter.put(this.baseUrl + 'cancelarCompra/' + cartId, store);
+  }
+
+  static async confirmShopping(cartId: number, store: Store<MainState>) {
+    return await AxiosAdapter.put(this.baseUrl + 'confirmarCompra/' + cartId, store);
+  }
+
   private static createCartListFromCartStore(cartStore: CartStore, idClient: number): Cart[] {
     const cartList: Cart[] = [];
 
