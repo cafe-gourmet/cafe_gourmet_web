@@ -158,23 +158,15 @@
         </v-row>
         <v-card variant="outlined" class="my-4 pa-4" style="background-color: transparent">
           <div class="mb-4">Alterar Senha</div>
-          <v-row align="center" style="height: 5rem">
-            <v-col cols="12">
-              <v-text-field
-                v-model="changePassword.password"
-                label="Senha Atual"
-                type="password"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
+          * Caso não queira alterar a senha, favor deixar os campos em branco
           <v-row align="center" style="height: 5rem">
             <v-col cols="12">
               <v-text-field
                 v-model="changePassword.newPassword"
-                label="Nova Senha"
+                label="Nova Senha*"
                 type="password"
                 variant="outlined"
+                :rules="[rules.validPassword]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -182,7 +174,7 @@
             <v-col cols="12">
               <v-text-field
                 v-model="changePassword.newPasswordRepeated"
-                label="Repita sua senha"
+                label="Repita sua senha*"
                 type="password"
                 variant="outlined"
               ></v-text-field>
@@ -211,20 +203,18 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router';
 import { ExternalServices } from '@/services/ExternalServices';
-import type { UserAddress } from '@/entity/User';
-import { User } from '@/entity/User';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
-import { AuthUser, AuthUserAdress, AuthUserClient, AuthUserRole } from '@/entity/AuthUser';
+import { AuthUser} from '@/entity/AuthUser';
 import { useStore } from 'vuex';
 import UserServices from '@/services/UserServices';
-import type { MainState } from '@/config/MainStore';
+import Rules from '@/utils/rules';
+const rules = ref(new Rules());
 
 const props = defineProps(['show']);
 var userAuth = ref(new AuthUser());
-const changePassword = ref({ password: '', newPassword: '', newPasswordRepeated: '' });
+const changePassword = ref({ newPassword: '', newPasswordRepeated: '' });
 const toast = useToast();
 const loadingFindCep = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -267,22 +257,15 @@ async function findAddressByCep() {
 }
 
 function canCadastrateUser(): boolean {
-  const userValues: AuthUser = userAuth.value;
   let haveEmptyField: boolean = false;
-
-  // Object.keys(userValues).map((field) => {
-  //   const fieldValue: string | number | AuthUserRole | AuthUserClient | undefined |null = userValues[field as keyof typeof userValues];
-
-  //   if (!fieldValue) {
-  //     haveEmptyField = true;
-  //   }
-  // });
 
   if (!userAuth.value.cliente!.endereco.cep) haveEmptyField = true;
   if (!userAuth.value.cliente!.endereco.numero) haveEmptyField = true;
-  if (!changePassword.value.newPassword) haveEmptyField = true;
-  if (!changePassword.value.newPasswordRepeated) haveEmptyField = true;
-  if (!changePassword.value.password) haveEmptyField = true;
+  if (!userAuth.value.email) haveEmptyField = true;
+  if (!userAuth.value.nomeCompleto) haveEmptyField = true;
+  if (!userAuth.value.cliente.telefone) haveEmptyField = true;
+  if (changePassword.value.newPassword && !changePassword.value.newPasswordRepeated || !changePassword.value.newPassword && changePassword.value.newPasswordRepeated) 
+    haveEmptyField = true;
 
   if (haveEmptyField) {
     toast.error('Preencha todos os campos.');
