@@ -18,6 +18,7 @@
                 v-model="aboutUs.descricao"
                 variant="solo"
                 bg-color="secondary"
+                :loading="loading"
               />
             </v-col>
           </v-row>
@@ -57,11 +58,14 @@ onMounted(async () => await getAboutUs());
 
 async function getAboutUs() {
   try {
+    loading.value = true;
     const response = await AboutUsServices.getAll(store);
     aboutUs.value = response ? response[0] : new AboutUs();
   } catch (error) {
     console.error('Erro ao buscar a descrição da página:', error);
     toast.error('Ocorreu um erro ao tentar buscar a descrição da tela.');
+  } finally {
+    loading.value = false;
   }
 }
 
