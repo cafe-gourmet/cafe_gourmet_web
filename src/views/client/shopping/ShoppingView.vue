@@ -17,6 +17,8 @@
                 <v-col cols="12" sm="12" md="4" lg="4">
                   <v-img
                     :src="getImage(item)"
+                    min-height="100"
+                    max-height="200"
                     style="border: 2px solid #5a2e2e; border-radius: 5px; width: 200px"
                   />
                 </v-col>

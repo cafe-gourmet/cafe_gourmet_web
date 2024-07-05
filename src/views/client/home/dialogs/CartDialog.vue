@@ -34,6 +34,8 @@
                         product.imgProduto3 ||
                         genericImage
                       "
+                      min-height="100"
+                      max-height="200"
                       style="border: 2px solid #5a2e2e; border-radius: 5px; width: 200px"
                     />
                   </v-col>
@@ -76,6 +78,8 @@
                       cart.plan.imgPlano3 ||
                       genericImage
                     "
+                    min-height="100"
+                    max-height="100"
                     style="border: 2px solid #5a2e2e; border-radius: 5px; width: 200px"
                   />
                 </v-col>
