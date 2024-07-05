@@ -28,7 +28,7 @@
           lg="2"
           align-self="center"
         >
-          <item-component :item="item" @click="showProductDialog(item)" />
+          <item-component :item="item" @click="showProductDialog(item)" class="product-item" />
         </v-col>
       </v-row>
     </v-container>
@@ -85,5 +85,17 @@ function closeProductDialog() {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+}
+
+.product-item {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 18rem;
+  overflow: hidden;
 }
 </style>

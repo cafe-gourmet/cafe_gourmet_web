@@ -1,7 +1,7 @@
 <template>
   <v-card class="bg-secondary pa-2 ma-auto" max-width="9rem">
     <v-img :src="getImage()" width="150" style="border: 2px solid #5a2e2e; border-radius: 5px" />
-    <div class="mt-2">{{ props.item.nome }}</div>
+    <div class="mt-2 item-text">{{ props.item.nome }}</div>
     <v-row class="mt-4">
       <v-col>R$ {{ formatCurrency(props.item.preco) }}</v-col>
     </v-row>
@@ -43,3 +43,14 @@ function addItemToCart() {
   }
 }
 </script>
+
+<style scoped>
+.item-text {
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis if text overflows */
+}
+</style>
