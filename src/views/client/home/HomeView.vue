@@ -46,13 +46,13 @@ onMounted(async () => await getAllItems());
 
 async function getAllItems() {
   await getProducts();
-  await getPlans()
+  await getPlans();
 }
 
 async function getProducts() {
   try {
     const response = await ProductServices.getAll(store);
-    productItems.value = response ? response : [];
+    productItems.value = response ? response.slice(0, 5) : [];
   } catch (error) {
     console.error('Erro ao buscar produtos:', error);
     toast.error('Ocorreu um erro ao tentar buscar os produtos.');
@@ -62,7 +62,7 @@ async function getProducts() {
 async function getPlans() {
   try {
     const response = await PlanServices.getAll(store);
-    planItems.value = response ? response : [];
+    planItems.value = response ? response.slice(0, 5) : [];
   } catch (error) {
     console.error('Erro ao buscar planos:', error);
     toast.error('Ocorreu um erro ao tentar buscar os planos.');
