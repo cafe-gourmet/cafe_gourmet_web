@@ -1,6 +1,6 @@
 <template>
   <v-card class="bg-secondary pa-2 ma-auto" max-width="9rem">
-    <v-img :src="getImage()" width="150" height="100" style="border: 2px solid #5a2e2e; border-radius: 5px" />
+    <v-img :src="getImage()" width="150" max-height="100" style="border: 2px solid #5a2e2e; border-radius: 5px" />
     <div class="mt-2 item-text">{{ props.item.nome }}</div>
     <v-row class="mt-4">
       <v-col>R$ {{ formatCurrency(props.item.preco) }}</v-col>
