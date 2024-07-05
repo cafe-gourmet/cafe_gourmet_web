@@ -267,20 +267,20 @@ function canCadastrateUser(): boolean {
   if (changePassword.value.newPassword && !changePassword.value.newPasswordRepeated || !changePassword.value.newPassword && changePassword.value.newPasswordRepeated) 
     haveEmptyField = true;
 
-  var retorno = rules.value.validPassword(changePassword.value.newPassword);
-  if(retorno!=true){
-    toast.error(retorno.toString());
-    return false;
-  }
-
   if (haveEmptyField) {
     toast.error('Preencha todos os campos.');
     return false;
   }
-
   if (changePassword.value.newPassword !== changePassword.value.newPasswordRepeated) {
     toast.error('As senhas devem ser iguais.');
     return false;
+  }
+  else if(changePassword.value.newPassword && changePassword.value.newPasswordRepeated){
+    var retorno = rules.value.validPassword(changePassword.value.newPassword);
+    if(retorno!=true){
+      toast.error(retorno.toString());
+      return false;
+    }
   }
 
   return true;
