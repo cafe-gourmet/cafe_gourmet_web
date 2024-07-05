@@ -16,6 +16,7 @@ import ShoppingView from '@/views/client/shopping/ShoppingView.vue';
 import ShoppingAdminView from '@/views/admin/Shopping/ShoppingView.vue';
 import AboutUsView from '@/views/admin/AboutUs/AboutUsView.vue';
 import ContactAdminView from '@/views/admin/Contact/ContactView.vue';
+import ContactView from '@/views/client/contact/ContactView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,6 +66,11 @@ const router = createRouter({
           path: 'shopping',
           name: 'client.shopping',
           component: ShoppingView
+        },
+        {
+          path: 'contact',
+          name: 'client.contact',
+          component: ContactView
         }
       ]
     },
