@@ -6,7 +6,7 @@
     <div>
       <h1 class="text-center">Sobre Nós</h1>
       <br />
-      {{ aboutUs?.descricao }}
+      <div v-html="aboutUs?.descricao"></div>
     </div>
   </v-container>
 </template>

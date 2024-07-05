@@ -4,7 +4,20 @@ export class AuthUserRole {
   id: number;
   nome: string;
   idSituacao: string;
+  permissoes: AuthUserRolePermission[];
 }
+export class AuthUserPermission {
+  id: number;
+  descricao: string;
+  cargos: AuthUserRolePermission[];
+}
+export class AuthUserRolePermission {
+  idCargo: number;
+  cargo: AuthUserRole;
+  idPermissao: number;
+  permissao: AuthUserPermission;
+}
+
 export class AuthUserAdress {
   cep: string;
   estado: string;

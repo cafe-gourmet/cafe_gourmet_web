@@ -13,13 +13,12 @@
         <div class="pa-4">
           <v-row>
             <v-col cols="12">
-              <v-textarea
+              <froala 
                 label="Descrição"
-                v-model="aboutUs.descricao"
+                v-model:value="aboutUs.descricao"
                 variant="solo"
                 bg-color="secondary"
-                :loading="loading"
-              />
+                :loading="loading"></froala>
             </v-col>
           </v-row>
           <v-row class="text-end">
