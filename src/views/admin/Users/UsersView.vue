@@ -1,11 +1,11 @@
 <template>
   <v-container style="width: 90vw">
     <header-component />
-    <v-card
-      class="bg-primary text-secondary pb-4"
-      style="width: 100%; margin-top: 100px"
-      elevation="24"
-    >
+    <v-btn color="secondary text-primary" style="margin-top: 80px" class="mb-10" to="/admin">
+      <v-icon icon="mdi-keyboard-backspace" size="x-large" />
+      Voltar
+    </v-btn>
+    <v-card class="bg-primary text-secondary pb-4" style="width: 100%" elevation="24">
       <template v-slot:title>
         <div class="mt-4 mb-4 break-text">Gerenciar Usuários</div>
       </template>
