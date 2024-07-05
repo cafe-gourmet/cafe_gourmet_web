@@ -17,6 +17,8 @@ import ShoppingAdminView from '@/views/admin/Shopping/ShoppingView.vue';
 import AboutUsView from '@/views/admin/AboutUs/AboutUsView.vue';
 import ContactAdminView from '@/views/admin/Contact/ContactView.vue';
 import ContactView from '@/views/client/contact/ContactView.vue';
+import { useToast } from 'vue-toastification';
+import { AuthUser, AuthUserPermission, AuthUserRole, AuthUserRolePermission } from '@/entity/AuthUser';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,42 +37,84 @@ const router = createRouter({
       path: '/client',
       name: 'client',
       beforeEnter: (to, from, next) => {
-        if (!MainStore.getters.isClient) {
-          next({ name: 'login' });
-        } else {
+        if (VerificaPermissoes(to.fullPath)) {
           next();
+        } else {
+          useToast().error('Você não possui acesso a essa funcionalidade!');
         }
       },
       children: [
         {
           path: '',
           name: 'client.home',
-          component: HomeClientView
+          component: HomeClientView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'products',
           name: 'client.products',
-          component: ProductsView
+          component: ProductsView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'plans',
           name: 'client.plans',
-          component: PlansView
+          component: PlansView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'about-us',
           name: 'client.about-us',
-          component: AboutUsComponent
+          component: AboutUsComponent,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'shopping',
           name: 'client.shopping',
-          component: ShoppingView
+          component: ShoppingView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'contact',
           name: 'client.contact',
-          component: ContactView
+          component: ContactView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         }
       ]
     },
@@ -78,61 +122,139 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       beforeEnter: (to, from, next) => {
-        if (!MainStore.getters.isAdmin) {
-          next({ name: 'login' });
-        } else {
+        // Verifica se o usuário tem permissão para a rota específica
+        if (VerificaPermissoes(to.fullPath)) {
           next();
+        } else {
+          useToast().error('Você não possui acesso a essa funcionalidade!');
         }
       },
       children: [
         {
           path: '',
           name: 'admin.home',
-          component: HomeAdminView
+          component: HomeAdminView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'products',
           name: 'admin.products',
-          component: ProductsAdminView
+          component: ProductsAdminView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'users',
           name: 'admin.users',
-          component: UsersView
+          component: UsersView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'plans',
           name: 'admin.plans',
-          component: PlansAdminView
+          component: PlansAdminView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'categories',
           name: 'admin.categories',
-          component: CategoryView
+          component: CategoryView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next(); 
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'reports',
           name: 'admin.reports',
-          component: ReportsView
+          component: ReportsView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'shoppings',
           name: 'admin.shoppings',
-          component: ShoppingAdminView
+          component: ShoppingAdminView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'about-us',
           name: 'admin.about-us',
-          component: AboutUsView
+          component: AboutUsView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         },
         {
           path: 'contact',
           name: 'admin.contact',
-          component: ContactAdminView
+          component: ContactAdminView,
+          beforeEnter: (to, from, next) => {
+            if (VerificaPermissoes(to.fullPath)) {
+              next();
+            } else {
+              useToast().error('Você não possui acesso a essa funcionalidade!');
+            }
+          },
         }
       ]
     }
   ]
 });
+export function VerificaPermissoes(fullPath: string):boolean{
+  const userPermissions: AuthUserRolePermission[] = MainStore.getters.getAuthUser.cargo.permissoes;
+  const urls: string[] = []
+
+  userPermissions.forEach((permissao) => {
+    urls.push(permissao.permissao.descricao);
+  });
+  //console.log(urls, fullPath);
+  // Verifica se o usuário tem permissão para a rota específica
+  if (urls.includes(fullPath))
+    return true;
+  
+  return false;
+}
 
 export default router;
