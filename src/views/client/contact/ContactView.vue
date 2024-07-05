@@ -43,6 +43,16 @@
         </v-col>
       </v-row>
     </v-sheet>
+    <v-sheet :height="250" width="100%">
+      <iframe
+        width="100%"
+        height="100%"
+        frameborder="0"
+        style="border: 0"
+        :src="contact.linkGoogleMaps"
+        allowfullscreen
+      ></iframe>
+    </v-sheet>
   </v-container>
 </template>
 
